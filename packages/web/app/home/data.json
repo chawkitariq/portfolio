@@ -1,0 +1,20 @@
+{
+  "navigation": [
+    {
+      "name": "About",
+      "href": "/home/about"
+    },
+    {
+      "name": "Blog",
+      "href": "/home/blog"
+    },
+    {
+      "name": "Services",
+      "href": "/home/services"
+    },
+    {
+      "name": "Contact",
+      "href": "/home/contact"
+    }
+  ]
+}
