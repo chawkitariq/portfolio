@@ -10,6 +10,8 @@ import { Post } from "@portfolio/api";
 import Pagination from "@/components/pagination";
 import PaginationFeedback from "@/components/pagination-feedback";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const columns = [
   {
@@ -74,6 +76,9 @@ export default function DemoPage() {
 
   return (
     <div className="container mx-auto grid gap-4">
+      <Button className="ml-auto" asChild>
+        <Link href="/admin/posts/new">New Post</Link>
+      </Button>
       <DataTable table={table} />
       <div className="flex justify-between items-center">
         <PaginationFeedback
