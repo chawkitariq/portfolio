@@ -1,16 +1,49 @@
 "use client";
 
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { columns, Payment } from "./columns";
-import { DataTable } from "./data-table";
+import { DataTable } from "../../../components/data-table";
+import { Post } from "@portfolio/api";
 
-function getData(): Payment[] {
+const columns = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created At",
+  },
+];
+
+function getData(): Post[] {
   return [
     {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
+      id: 1,
+      title: "First Post",
+      summary: "This is the summary of the first post.",
+      content: "This is the content of the first post.",
+      createdAt: new Date("2023-01-01").toISOString(),
+      updatedAt: new Date("2023-01-15").toISOString(),
+    },
+    {
+      id: 2,
+      title: "Second Post",
+      summary: "This is the summary of the second post.",
+      content: "This is the content of the second post.",
+      createdAt: new Date("2023-02-01").toISOString(),
+      updatedAt: new Date("2023-02-15").toISOString(),
+    },
+    {
+      id: 3,
+      title: "Third Post",
+      summary: "This is the summary of the third post.",
+      content: "This is the content of the third post.",
+      createdAt: new Date("2023-03-01").toISOString(),
+      updatedAt: new Date("2023-03-15").toISOString(),
     },
   ];
 }
@@ -18,7 +51,7 @@ function getData(): Payment[] {
 export default function DemoPage() {
   const data = getData();
 
-  const table = useReactTable({
+  const table = useReactTable<Post>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
