@@ -1,8 +1,15 @@
 "use client";
 
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { DataTable } from "../../../components/data-table";
 import { Post } from "@portfolio/api";
+import Pagination from "@/components/pagination";
+import PaginationFeedback from "@/components/pagination-feedback";
+import { useState } from "react";
 
 const columns = [
   {
@@ -49,17 +56,43 @@ function getData(): Post[] {
 }
 
 export default function DemoPage() {
-  const data = getData();
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const table = useReactTable<Post>({
-    data,
+    data: getData(),
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
   });
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto grid gap-4">
       <DataTable table={table} />
+      <div className="flex justify-between items-center">
+        <PaginationFeedback
+          page={table.getState().pagination.pageIndex + 1}
+          rowsPerPage={table.getState().pagination.pageSize}
+          totalItems={table.getCoreRowModel().rows.length}
+          onPageChange={table.setPageIndex}
+          onRowsPerPageChange={table.setPageSize}
+          pageSizeOptions={[10, 25, 50, 100]}
+        />
+        <div className="flex-1">
+          <Pagination
+            currentPage={table.getState().pagination.pageIndex + 1}
+            totalPages={table.getPageCount()}
+            onPageChange={table.setPageIndex}
+            maxVisible={5}
+          />
+        </div>
+      </div>
     </div>
   );
 }
