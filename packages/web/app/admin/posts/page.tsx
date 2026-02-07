@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ColumnDef,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
@@ -12,50 +13,77 @@ import PaginationFeedback from "@/components/pagination-feedback";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { findAllPost } from "@/api/post";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const columns = [
+const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "id",
     header: "ID",
+    cell: ({ getValue }) => (
+      <div className="font-mono text-sm text-muted-foreground">
+        {getValue<string>()}
+      </div>
+    ),
   },
   {
     accessorKey: "title",
     header: "Title",
+    cell: ({ getValue }) => (
+      <div className="font-medium">{getValue<string>()}</div>
+    ),
+  },
+  {
+    accessorKey: "summary",
+    header: "Summary",
+    cell: ({ getValue }) => (
+      <div className="font-medium">{getValue<string>()}</div>
+    ),
   },
   {
     accessorKey: "createdAt",
     header: "Created At",
+    cell: ({ getValue }) => (
+      <div className="font-mono text-sm text-muted-foreground">
+        {Intl.DateTimeFormat("fr-FR", {
+          dateStyle: "short",
+          timeStyle: "short",
+        }).format(new Date(+getValue<string>()))}
+      </div>
+    ),
+  },
+  {
+    header: "actions",
+    cell: ({ row }) => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            ...
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/posts/${row.getValue<string>("id")}`}>
+              View
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/posts/${row.getValue<string>("id")}/edit`}>
+              Edit
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ];
-
-function getData(): Post[] {
-  return [
-    {
-      id: 1,
-      title: "First Post",
-      summary: "This is the summary of the first post.",
-      content: "This is the content of the first post.",
-      createdAt: new Date("2023-01-01").toISOString(),
-      updatedAt: new Date("2023-01-15").toISOString(),
-    },
-    {
-      id: 2,
-      title: "Second Post",
-      summary: "This is the summary of the second post.",
-      content: "This is the content of the second post.",
-      createdAt: new Date("2023-02-01").toISOString(),
-      updatedAt: new Date("2023-02-15").toISOString(),
-    },
-    {
-      id: 3,
-      title: "Third Post",
-      summary: "This is the summary of the third post.",
-      content: "This is the content of the third post.",
-      createdAt: new Date("2023-03-01").toISOString(),
-      updatedAt: new Date("2023-03-15").toISOString(),
-    },
-  ];
-}
 
 export default function DemoPage() {
   const [pagination, setPagination] = useState({
@@ -63,8 +91,13 @@ export default function DemoPage() {
     pageSize: 10,
   });
 
+  const findAllPostQuery = useQuery({
+    queryKey: ["posts"],
+    queryFn: findAllPost,
+  });
+
   const table = useReactTable<Post>({
-    data: getData(),
+    data: findAllPostQuery.data?.data.data.post || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -75,7 +108,7 @@ export default function DemoPage() {
   });
 
   return (
-    <div className="container mx-auto grid gap-4">
+    <div className="container mx-auto grid gap-4 p-4">
       <Button className="ml-auto" asChild>
         <Link href="/admin/posts/new">New Post</Link>
       </Button>

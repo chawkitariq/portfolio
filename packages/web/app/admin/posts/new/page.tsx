@@ -8,17 +8,21 @@ import { CreatePostInput } from "@portfolio/api";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/api/post";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function NewPostPage() {
+  const router = useRouter();
+
   const queryClient = useQueryClient();
 
   const createPostMutation = useMutation({
     mutationKey: ["posts"],
     mutationFn: createPost,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      router.push("/admin/posts");
     },
     onError: (error) => {
       console.error("Error creating post:", error);
@@ -36,20 +40,11 @@ export default function NewPostPage() {
     },
   });
 
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: formik.values.content,
-    onUpdate: ({ editor }) => {
-      formik.setFieldValue("content", editor.getHTML());
-    },
-    immediatelyRender: false,
-  });
-
   return (
-    <div className="px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Create New Post</h1>
+          <h1 className="text-3xl font-bold">New Post</h1>
           <p className="text-muted-foreground">
             Fill in the details below to create a new blog post.
           </p>
@@ -78,14 +73,23 @@ export default function NewPostPage() {
             />
           </div>
 
-          <EditorContent editor={editor} />
+          <MinimalTiptapEditor
+            value={formik.values.content}
+            onChange={(value) => formik.setFieldValue("content", value)}
+            className="w-full"
+            editorContentClassName="p-5 h-[800px] overflow-y-scroll"
+            output="html"
+            placeholder="Post content"
+            editable={true}
+            editorClassName="focus:outline-hidden"
+          />
 
           <div className="flex gap-4">
             <Button type="submit" disabled={createPostMutation.isPending}>
               {createPostMutation.isPending ? "Creating..." : "Create Post"}
             </Button>
-            <Button type="button" variant="outline">
-              Cancel
+            <Button type="button" variant="outline" asChild>
+              <Link href="/admin/posts">Cancel</Link>
             </Button>
           </div>
         </form>
