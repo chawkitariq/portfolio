@@ -12,7 +12,7 @@ import { findOnePost, updatePost } from "@/api/post";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useBreadcrumbStore } from "@/stores/breadcrumb";
 import { uploadFile } from "@/api/upload";
 
@@ -36,6 +36,11 @@ export default function EditPostPage() {
     enabled: !!params.slug,
   });
 
+  const post = useMemo(
+    () => findOnePostQuery.data?.data?.data?.postOne,
+    [findOnePostQuery.data],
+  );
+
   const queryClient = useQueryClient();
 
   const updatePostMutation = useMutation({
@@ -52,34 +57,27 @@ export default function EditPostPage() {
   });
 
   const handleUploader = useCallback(async (file: File): Promise<string> => {
-    const { url } = await uploadFile(file);
-    return url;
+    const { data } = await uploadFile(file);
+    return data.url;
   }, []);
 
-  const formik = useFormik<
-    UpdatePostInput & { thumbnailFile: File | undefined }
-  >({
+  const formik = useFormik<UpdatePostInput>({
     initialValues: {
-      id: findOnePostQuery?.data?.data?.data?.postOne?.id || 0,
-      title: findOnePostQuery?.data?.data?.data?.postOne?.title || "",
-      summary: findOnePostQuery?.data?.data?.data?.postOne?.summary || "",
-      content: findOnePostQuery?.data?.data?.data?.postOne?.content || "",
-      thumbnailUrl:
-        findOnePostQuery?.data?.data?.data?.postOne?.thumbnailUrl || "",
-      thumbnailFile: undefined,
+      id: post?.id || 0,
+      title: post?.title || "",
+      summary: post?.summary || "",
+      content: post?.content || "",
+      thumbnailUrl: post?.thumbnailUrl || "",
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (values.thumbnailFile instanceof File) {
-        const { data } = await uploadFile(values.thumbnailFile);
+      if (values.thumbnailUrl instanceof File) {
+        const { data } = await uploadFile(values.thumbnailUrl);
         values.thumbnailUrl = data.url;
       }
-      delete values.thumbnailFile;
       updatePostMutation.mutate(values);
     },
   });
-
-  console.log("formik values", formik.values.thumbnailFile);
 
   return (
     <div className="px-4 py-8">
@@ -117,6 +115,7 @@ export default function EditPostPage() {
           <div className="space-y-2">
             <Label>Content</Label>
             <MinimalTiptapEditor
+              uploader={handleUploader}
               value={formik.values.content}
               onChange={(value) => formik.setFieldValue("content", value)}
               className="w-full"
@@ -125,21 +124,16 @@ export default function EditPostPage() {
               placeholder="Post content"
               editable={true}
               editorClassName="focus:outline-hidden"
-              uploader={handleUploader}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="thumbnailFile">Thumbnail</Label>
+            <Label htmlFor="thumbnailUrl">Thumbnail</Label>
             <Input
-              id="thumbnailFile"
+              id="thumbnailUrl"
               type="file"
-              value={formik.values.thumbnailUrl!}
               onChange={(e) =>
-                formik.setFieldValue(
-                  "thumbnailFile",
-                  e.currentTarget.files?.[0],
-                )
+                formik.setFieldValue("thumbnailUrl", e.currentTarget.files?.[0])
               }
             />
           </div>

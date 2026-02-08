@@ -45,8 +45,8 @@ export default function NewPostPage() {
   });
 
   const handleUploader = useCallback(async (file: File): Promise<string> => {
-    const { url } = await uploadFile(file);
-    return url;
+    const { data } = await uploadFile(file);
+    return data.url;
   }, []);
 
   const formik = useFormik<CreatePostInput>({
@@ -54,15 +54,18 @@ export default function NewPostPage() {
       title: "",
       summary: "",
       content: "",
+      thumbnailUrl: undefined,
     },
     onSubmit: async (values) => {
       if (values.thumbnailUrl instanceof File) {
-        const { url } = await uploadFile(values.thumbnailUrl);
-        values.thumbnailUrl = url;
+        const { data } = await uploadFile(values.thumbnailUrl);
+        values.thumbnailUrl = data.url;
       }
       createPostMutation.mutate(values);
     },
   });
+
+  console.log(formik.values);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -112,10 +115,11 @@ export default function NewPostPage() {
           <div className="space-y-2">
             <Label htmlFor="thumbnailUrl">Thumbnail</Label>
             <Input
-              {...formik.getFieldProps("thumbnailUrl")}
+              onChange={(e) =>
+                formik.setFieldValue("thumbnailUrl", e.target.files?.[0])
+              }
               id="thumbnailUrl"
               type="file"
-              placeholder="Enter thumbnail URL or upload an image"
             />
           </div>
 
