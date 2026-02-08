@@ -12,9 +12,21 @@ import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useBreadcrumbStore } from "@/stores/breadcrumb";
+import { useEffect } from "react";
 
 export default function NewPostPage() {
   const router = useRouter();
+
+  const setBreadcrumbs = useBreadcrumbStore((state) => state.setBreadcrumbs);
+
+  useEffect(() => {
+    setBreadcrumbs([
+      { label: "Home", href: "/admin" },
+      { label: "Posts", href: "/admin/posts" },
+      { label: "New Post" },
+    ]);
+  }, [setBreadcrumbs]);
 
   const queryClient = useQueryClient();
 

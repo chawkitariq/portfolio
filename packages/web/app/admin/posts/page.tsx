@@ -10,7 +10,7 @@ import { DataTable } from "../../../components/data-table";
 import { Post } from "@portfolio/api";
 import Pagination from "@/components/pagination";
 import PaginationFeedback from "@/components/pagination-feedback";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -22,12 +22,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import { useBreadcrumbStore } from "@/stores/breadcrumb";
 
 export default function DemoPage() {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const setBreadcrumbs = useBreadcrumbStore((state) => state.setBreadcrumbs);
+
+  useEffect(() => {
+    setBreadcrumbs([{ label: "Home", href: "/admin" }, { label: "Posts" }]);
+  }, [setBreadcrumbs]);
 
   const findAllPostQuery = useQuery({
     queryKey: ["posts"],

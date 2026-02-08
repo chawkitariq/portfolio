@@ -1,8 +1,19 @@
+"use client";
+
+import { useBreadcrumbStore } from "@/stores/breadcrumb";
+import { useEffect } from "react";
+
 export const iframeHeight = "800px";
 
 export const description = "A sidebar with a header and a search form.";
 
 export default function Page() {
+  const setBreadcrumbs = useBreadcrumbStore((state) => state.setBreadcrumbs);
+
+  useEffect(() => {
+    setBreadcrumbs([{ label: "Home" }]);
+  }, [setBreadcrumbs]);
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">

@@ -14,9 +14,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useSidebar } from "@/components/ui/sidebar"
+import { useBreadcrumbStore } from "@/stores/breadcrumb"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
+  const { items } = useBreadcrumbStore()
 
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
@@ -30,17 +32,24 @@ export function SiteHeader() {
           <SidebarIcon />
         </Button>
         <Separator orientation="vertical" className="mr-2 h-4" />
-        <Breadcrumb className="hidden sm:block">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">Build Your Application</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        {items.length > 0 && (
+          <Breadcrumb className="hidden sm:block">
+            <BreadcrumbList>
+              {items.map((item, index) => (
+                <>
+                  <BreadcrumbItem key={index}>
+                    {index === items.length - 1 || !item.href ? (
+                      <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                  {index < items.length - 1 && <BreadcrumbSeparator key={`sep-${index}`} />}
+                </>
+              ))}
+            </BreadcrumbList>
+          </Breadcrumb>
+        )}
         <SearchForm className="w-full sm:ml-auto sm:w-auto" />
       </div>
     </header>

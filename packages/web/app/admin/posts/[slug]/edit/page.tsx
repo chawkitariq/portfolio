@@ -12,10 +12,22 @@ import { findOnePost, updatePost } from "@/api/post";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useEffect } from "react";
+import { useBreadcrumbStore } from "@/stores/breadcrumb";
 
 export default function EditPostPage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
+
+  const setBreadcrumbs = useBreadcrumbStore((state) => state.setBreadcrumbs);
+
+  useEffect(() => {
+    setBreadcrumbs([
+      { label: "Home", href: "/admin" },
+      { label: "Posts", href: "/admin/posts" },
+      { label: "Edit Post" },
+    ]);
+  }, [setBreadcrumbs]);
 
   const findOnePostQuery = useQuery({
     queryKey: ["posts", params.slug],
