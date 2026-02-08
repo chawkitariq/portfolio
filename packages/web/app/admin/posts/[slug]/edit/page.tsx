@@ -9,6 +9,9 @@ import { useFormik } from "formik";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { findOnePost, updatePost } from "@/api/post";
+import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function EditPostPage() {
   const params = useParams<{ slug: string }>();
@@ -26,11 +29,12 @@ export default function EditPostPage() {
     mutationKey: ["posts", params.slug],
     mutationFn: updatePost,
     onSuccess: () => {
+      toast.success("Post edited successfully!");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       router.push("/admin/posts");
     },
-    onError: (error) => {
-      console.error("Error creating post:", error);
+    onError: () => {
+      toast.error("Failed to edit post. Please try again.");
     },
   });
 
@@ -81,13 +85,16 @@ export default function EditPostPage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="content">Content</Label>
-            <Textarea
-              {...formik.getFieldProps("content")}
-              id="content"
-              placeholder="Write your post content here..."
-              rows={15}
-              required
+            <Label>Content</Label>
+            <MinimalTiptapEditor
+              value={formik.values.content}
+              onChange={(value) => formik.setFieldValue("content", value)}
+              className="w-full"
+              editorContentClassName="p-5 h-[800px] overflow-y-scroll"
+              output="html"
+              placeholder="Post content"
+              editable={true}
+              editorClassName="focus:outline-hidden"
             />
           </div>
 
@@ -95,8 +102,8 @@ export default function EditPostPage() {
             <Button type="submit" disabled={formik.isSubmitting}>
               {formik.isSubmitting ? "Editing..." : "Edit Post"}
             </Button>
-            <Button type="button" variant="outline">
-              Cancel
+            <Button type="button" variant="outline" asChild>
+              <Link href="/admin/posts">Cancel</Link>
             </Button>
           </div>
         </form>

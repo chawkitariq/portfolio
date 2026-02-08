@@ -92,3 +92,24 @@ export function updatePost(
     },
   });
 }
+
+export function removePost(id: number): Promise<AxiosResponse> {
+  return graphql({
+    data: {
+      query: `mutation RemovePost($id: Int!) {
+        removePost(id: $id) {
+          id
+          title
+          summary
+          content
+          createdAt
+          updatedAt
+        }
+      }
+    `,
+      variables: {
+        id,
+      },
+    },
+  });
+}

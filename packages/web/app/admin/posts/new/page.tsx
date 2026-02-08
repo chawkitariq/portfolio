@@ -11,6 +11,7 @@ import { createPost } from "@/api/post";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -21,11 +22,12 @@ export default function NewPostPage() {
     mutationKey: ["posts"],
     mutationFn: createPost,
     onSuccess: () => {
+      toast.success("Post created successfully!");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       router.push("/admin/posts");
     },
-    onError: (error) => {
-      console.error("Error creating post:", error);
+    onError: () => {
+      toast.error("Failed to create post. Please try again.");
     },
   });
 

@@ -10,80 +10,18 @@ import { DataTable } from "../../../components/data-table";
 import { Post } from "@portfolio/api";
 import Pagination from "@/components/pagination";
 import PaginationFeedback from "@/components/pagination-feedback";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { findAllPost } from "@/api/post";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { findAllPost, removePost } from "@/api/post";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const columns: ColumnDef<Post>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-    cell: ({ getValue }) => (
-      <div className="font-mono text-sm text-muted-foreground">
-        {getValue<string>()}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "title",
-    header: "Title",
-    cell: ({ getValue }) => (
-      <div className="font-medium">{getValue<string>()}</div>
-    ),
-  },
-  {
-    accessorKey: "summary",
-    header: "Summary",
-    cell: ({ getValue }) => (
-      <div className="font-medium">{getValue<string>()}</div>
-    ),
-  },
-  {
-    accessorKey: "createdAt",
-    header: "Created At",
-    cell: ({ getValue }) => (
-      <div className="font-mono text-sm text-muted-foreground">
-        {Intl.DateTimeFormat("fr-FR", {
-          dateStyle: "short",
-          timeStyle: "short",
-        }).format(new Date(+getValue<string>()))}
-      </div>
-    ),
-  },
-  {
-    header: "actions",
-    cell: ({ row }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            ...
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/posts/${row.getValue<string>("id")}`}>
-              View
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/posts/${row.getValue<string>("id")}/edit`}>
-              Edit
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  },
-];
+import { toast } from "sonner";
 
 export default function DemoPage() {
   const [pagination, setPagination] = useState({
@@ -96,8 +34,100 @@ export default function DemoPage() {
     queryFn: findAllPost,
   });
 
+  const posts = useMemo(
+    () => findAllPostQuery.data?.data.data.post || [],
+    [findAllPostQuery.data],
+  );
+
+  const queryClient = useQueryClient();
+
+  const removePostMutation = useMutation({
+    mutationKey: ["posts"],
+    mutationFn: removePost,
+    onSuccess: () => {
+      toast.success("Post removed successfully!");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+    onError: () => {
+      toast.error("Failed to remove post. Please try again.");
+    },
+  });
+
+  const columns: ColumnDef<Post>[] = useMemo(
+    () => [
+      {
+        accessorKey: "id",
+        header: "ID",
+        cell: ({ getValue }) => (
+          <div className="font-mono text-sm text-muted-foreground">
+            {getValue<string>()}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "title",
+        header: "Title",
+        cell: ({ getValue }) => (
+          <div className="font-medium">{getValue<string>()}</div>
+        ),
+      },
+      {
+        accessorKey: "summary",
+        header: "Summary",
+        cell: ({ getValue }) => (
+          <div className="font-medium">{getValue<string>()}</div>
+        ),
+      },
+      {
+        accessorKey: "createdAt",
+        header: "Created At",
+        cell: ({ getValue }) => (
+          <div className="font-mono text-sm text-muted-foreground">
+            {Intl.DateTimeFormat("fr-FR", {
+              dateStyle: "short",
+              timeStyle: "short",
+            }).format(new Date(+getValue<string>()))}
+          </div>
+        ),
+      },
+      {
+        header: "actions",
+        cell: ({ row }) => (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                ...
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem asChild>
+                <Link href={`/admin/posts/${row.getValue<string>("id")}`}>
+                  View
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={`/admin/posts/${row.getValue<string>("id")}/edit`}>
+                  Edit
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-red-500"
+                onClick={() =>
+                  removePostMutation.mutate(+row.getValue<string>("id"))
+                }
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ),
+      },
+    ],
+    [],
+  );
+
   const table = useReactTable<Post>({
-    data: findAllPostQuery.data?.data.data.post || [],
+    data: posts,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
