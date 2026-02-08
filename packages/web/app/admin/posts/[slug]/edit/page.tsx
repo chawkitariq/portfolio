@@ -12,8 +12,9 @@ import { findOnePost, updatePost } from "@/api/post";
 import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useBreadcrumbStore } from "@/stores/breadcrumb";
+import { uploadFile } from "@/api/upload";
 
 export default function EditPostPage() {
   const params = useParams<{ slug: string }>();
@@ -50,18 +51,35 @@ export default function EditPostPage() {
     },
   });
 
-  const formik = useFormik<UpdatePostInput>({
+  const handleUploader = useCallback(async (file: File): Promise<string> => {
+    const { url } = await uploadFile(file);
+    return url;
+  }, []);
+
+  const formik = useFormik<
+    UpdatePostInput & { thumbnailFile: File | undefined }
+  >({
     initialValues: {
       id: findOnePostQuery?.data?.data?.data?.postOne?.id || 0,
       title: findOnePostQuery?.data?.data?.data?.postOne?.title || "",
       summary: findOnePostQuery?.data?.data?.data?.postOne?.summary || "",
       content: findOnePostQuery?.data?.data?.data?.postOne?.content || "",
+      thumbnailUrl:
+        findOnePostQuery?.data?.data?.data?.postOne?.thumbnailUrl || "",
+      thumbnailFile: undefined,
     },
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      if (values.thumbnailFile instanceof File) {
+        const { data } = await uploadFile(values.thumbnailFile);
+        values.thumbnailUrl = data.url;
+      }
+      delete values.thumbnailFile;
       updatePostMutation.mutate(values);
     },
   });
+
+  console.log("formik values", formik.values.thumbnailFile);
 
   return (
     <div className="px-4 py-8">
@@ -107,6 +125,22 @@ export default function EditPostPage() {
               placeholder="Post content"
               editable={true}
               editorClassName="focus:outline-hidden"
+              uploader={handleUploader}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="thumbnailFile">Thumbnail</Label>
+            <Input
+              id="thumbnailFile"
+              type="file"
+              value={formik.values.thumbnailUrl!}
+              onChange={(e) =>
+                formik.setFieldValue(
+                  "thumbnailFile",
+                  e.currentTarget.files?.[0],
+                )
+              }
             />
           </div>
 

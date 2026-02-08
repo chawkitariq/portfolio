@@ -11,6 +11,7 @@ export function createPost(
         createPost(input: $input) {
         id
         title
+        thumbnailUrl
         summary
         content
         createdAt
@@ -35,6 +36,7 @@ export function findAllPost(): Promise<
         post {
           id
           title
+          thumbnailUrl
           summary
           content
           createdAt
@@ -56,6 +58,7 @@ export function findOnePost(
         postOne(id: $id) {
           id
           title
+          thumbnailUrl
           summary
           content
           createdAt
@@ -79,6 +82,7 @@ export function updatePost(
         updatePost(input: $input) {
           id
           title
+          thumbnailUrl
           summary
           content
           createdAt

@@ -13,7 +13,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useBreadcrumbStore } from "@/stores/breadcrumb";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { uploadFile } from "@/api/upload";
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -43,13 +44,22 @@ export default function NewPostPage() {
     },
   });
 
+  const handleUploader = useCallback(async (file: File): Promise<string> => {
+    const { url } = await uploadFile(file);
+    return url;
+  }, []);
+
   const formik = useFormik<CreatePostInput>({
     initialValues: {
       title: "",
       summary: "",
       content: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      if (values.thumbnailUrl instanceof File) {
+        const { url } = await uploadFile(values.thumbnailUrl);
+        values.thumbnailUrl = url;
+      }
       createPostMutation.mutate(values);
     },
   });
@@ -96,7 +106,18 @@ export default function NewPostPage() {
             placeholder="Post content"
             editable={true}
             editorClassName="focus:outline-hidden"
+            uploader={handleUploader}
           />
+
+          <div className="space-y-2">
+            <Label htmlFor="thumbnailUrl">Thumbnail</Label>
+            <Input
+              {...formik.getFieldProps("thumbnailUrl")}
+              id="thumbnailUrl"
+              type="file"
+              placeholder="Enter thumbnail URL or upload an image"
+            />
+          </div>
 
           <div className="flex gap-4">
             <Button type="submit" disabled={createPostMutation.isPending}>

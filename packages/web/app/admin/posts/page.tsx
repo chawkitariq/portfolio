@@ -79,6 +79,17 @@ export default function DemoPage() {
         ),
       },
       {
+        accessorKey: "thumbnailUrl",
+        header: "Thumbnail",
+        cell: ({ getValue }) => (
+          <img
+            src={getValue<string>()}
+            alt="Thumbnail"
+            className="h-24 w-24 rounded object-cover"
+          />
+        ),
+      },
+      {
         accessorKey: "summary",
         header: "Summary",
         cell: ({ getValue }) => (
