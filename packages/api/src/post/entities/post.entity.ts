@@ -15,6 +15,14 @@ export class PostEntity {
   @Column({ type: 'varchar', length: 255 })
   title!: string;
 
+  @Column({
+    name: 'thumbnail_url',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  thumbnailUrl?: string;
+
   @Column({ type: 'varchar', length: 500 })
   summary!: string;
 

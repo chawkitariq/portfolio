@@ -1,6 +1,7 @@
 type Post {
   id: Int!
   title: String!
+  thumbnailUrl: String
   summary: String!
   content: String!
   createdAt: String!
@@ -9,6 +10,7 @@ type Post {
 
 input CreatePostInput {
   title: String!
+  thumbnailUrl: String
   summary: String!
   content: String!
 }
@@ -16,6 +18,7 @@ input CreatePostInput {
 input UpdatePostInput {
   id: Int!
   title: String
+  thumbnailUrl: String
   summary: String
   content: String
 }

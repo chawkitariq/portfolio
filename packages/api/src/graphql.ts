@@ -10,6 +10,7 @@
 
 export interface CreatePostInput {
     title: string;
+    thumbnailUrl?: Nullable<string>;
     summary: string;
     content: string;
 }
@@ -17,6 +18,7 @@ export interface CreatePostInput {
 export interface UpdatePostInput {
     id: number;
     title?: Nullable<string>;
+    thumbnailUrl?: Nullable<string>;
     summary?: Nullable<string>;
     content?: Nullable<string>;
 }
@@ -24,6 +26,7 @@ export interface UpdatePostInput {
 export interface Post {
     id: number;
     title: string;
+    thumbnailUrl?: Nullable<string>;
     summary: string;
     content: string;
     createdAt: string;
