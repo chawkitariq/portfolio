@@ -1,6 +1,15 @@
+import api from "@/configs/api";
 import graphql from "@/configs/graphql";
 import { CreatePostInput, Post, UpdatePostInput } from "@portfolio/api";
 import { AxiosResponse } from "axios";
+
+export function findAllBlogPost(): Promise<AxiosResponse<Post[]>> {
+  return api.get("/posts");
+}
+
+export function findOneBlogPost(id: number): Promise<AxiosResponse<Post>> {
+  return api.get(`/posts/${id}`);
+}
 
 export function createPost(
   input: CreatePostInput,

@@ -1,9 +1,9 @@
-import { findAllPost } from "@/api/post";
+import { findAllBlogPost, findAllPost } from "@/api/post";
 import Link from "next/link";
 
 export default async function Blog() {
-  const response = await findAllPost();
-  const posts = response.data.data.post;
+  const response = await findAllBlogPost();
+  const posts = response.data;
 
   return (
     <div
@@ -32,7 +32,7 @@ export default async function Blog() {
                     <img
                       alt={post.title}
                       className="w-full object-cover transition-transform duration-300 group-hover:scale-105 lg:max-h-60.5"
-                      src={post.thumbnailUrl}
+                      src={post.thumbnailUrl!}
                     />
                   </div>
                   <div className="space-y-2">

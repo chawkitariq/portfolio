@@ -1,4 +1,4 @@
-import { findOnePost } from "@/api/post";
+import { findOneBlogPost, findOnePost } from "@/api/post";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, Clock } from "lucide-react";
 
@@ -8,8 +8,8 @@ export default async function BlogPostDetail({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const response = await findOnePost(+slug);
-  const post = response.data.data.postOne;
+  const response = await findOneBlogPost(+slug);
+  const post = response.data;
 
   if (!post) {
     return (
