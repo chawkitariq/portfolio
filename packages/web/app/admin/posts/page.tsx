@@ -42,7 +42,7 @@ export default function DemoPage() {
   });
 
   const posts = useMemo(
-    () => findAllPostQuery.data?.data.data.post || [],
+    () => findAllPostQuery.data?.data?.data?.post || [],
     [findAllPostQuery.data],
   );
 
