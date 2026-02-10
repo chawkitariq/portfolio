@@ -4,10 +4,12 @@ import {
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'posts' })
+@Unique(['title', 'deletedAt'])
 export class PostEntity {
   @PrimaryGeneratedColumn('increment')
   id!: number;

@@ -11,6 +11,7 @@ import {
   NotFoundException,
   Param,
   ParseFilePipeBuilder,
+  ParseIntPipe,
   Post,
   StreamableFile,
   UploadedFile,
@@ -21,6 +22,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import type { Express } from 'express';
 import { v7 as uuidv7 } from 'uuid';
 import { extname } from 'node:path';
+import { PostService } from './post.service';
+import { Public } from 'src/decorators/public.decorator';
 
 export type UploadedFileResponse = {
   url: string;
@@ -33,7 +36,10 @@ export class PostController {
   private readonly bucketName: string;
   private readonly appUrl: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly postService: PostService,
+    private readonly configService: ConfigService,
+  ) {
     this.bucketName = this.configService.getOrThrow<string>('S3_BUCKET_NAME');
     this.appUrl = this.configService.getOrThrow<string>('APP_URL');
 
@@ -41,6 +47,18 @@ export class PostController {
       endpoint: this.configService.getOrThrow<string>('S3_ENDPOINT'),
       forcePathStyle: true,
     });
+  }
+
+  @Get('posts')
+  @Public()
+  findAll() {
+    return this.postService.findAll();
+  }
+
+  @Get('posts/:id')
+  @Public()
+  findOne(@Param('id', new ParseIntPipe({ optional: false })) id: number) {
+    return this.postService.findOne(id);
   }
 
   @Post('upload')
