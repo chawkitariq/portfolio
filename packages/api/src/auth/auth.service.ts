@@ -6,6 +6,10 @@ import { Repository } from 'typeorm';
 import { compare, hash } from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 
+export type AuthSignInResponse = {
+  access_token: string;
+};
+
 @Injectable()
 export class AuthService {
   private readonly hashRounds: number;
@@ -33,7 +37,7 @@ export class AuthService {
   async signIn(
     username: string,
     pass: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<AuthSignInResponse> {
     const user = await this.userRepository.findOne({
       where: { email: username },
     });
