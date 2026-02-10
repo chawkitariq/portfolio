@@ -6,6 +6,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'node:path';
 import { PostModule } from './post/post.module';
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { DatabaseModule } from './database/database.module';
     }),
     PostModule,
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

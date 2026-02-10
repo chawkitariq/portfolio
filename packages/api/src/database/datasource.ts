@@ -17,10 +17,6 @@ const datasource = new DataSource({
   migrations: [join(__dirname, './migrations/**/*.{ts,js}')],
   synchronize: configService.get<string>('DB_SYNCHRONIZE') === 'true',
   logging: configService.get<string>('DB_LOGGING') === 'true',
-  ssl:
-    configService.get<string>('DB_SSL') === 'true'
-      ? { rejectUnauthorized: false }
-      : false,
 });
 
 export default datasource;
