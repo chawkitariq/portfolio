@@ -1,18 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useAuthStore } from "@/stores/auth";
+import { useEffect, useState } from "react";
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
-  const accessToken = useAuthStore((s) => s.accessToken);
-  const router = useRouter();
+  const [hasMounted, setHasMounted] = useState(false);
+  const { accessToken } = useAuthStore();
 
   useEffect(() => {
-    if (!accessToken) {
-      router.replace("/sign-in");
-    }
-  }, [accessToken, router]);
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+
+  if (!accessToken) {
+    return redirect("/sign-in");
+  }
 
   return children;
 }
