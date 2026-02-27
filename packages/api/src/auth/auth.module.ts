@@ -16,7 +16,6 @@ import { AuthGuard } from './auth.guard';
       imports: [ConfigModule.forRoot()],
       useFactory: (configService: ConfigService) => ({
         secret: configService.getOrThrow<string>('JWT_ACCESS_TOKEN_SECRET'),
-        verifyOptions: { algorithms: ['RS256'] },
         signOptions: { expiresIn: '1h' },
       }),
       inject: [ConfigService],

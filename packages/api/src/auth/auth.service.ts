@@ -5,6 +5,7 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { compare, hash } from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { AuthAccesTokenPayload } from './auth.type';
 
 export type AuthSignInResponse = {
   access_token: string;
@@ -34,10 +35,7 @@ export class AuthService {
     return this.userRepository.save(user);
   }
 
-  async signIn(
-    username: string,
-    pass: string,
-  ): Promise<AuthSignInResponse> {
+  async signIn(username: string, pass: string): Promise<AuthSignInResponse> {
     const user = await this.userRepository.findOne({
       where: { email: username },
     });
@@ -46,7 +44,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: user.id, username: user.email };
+    const payload: AuthAccesTokenPayload = { sub: user.id };
 
     return {
       access_token: await this.jwtService.signAsync(payload),
