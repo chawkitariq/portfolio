@@ -34,9 +34,8 @@ output "rds_db_name" {
   value       = aws_db_instance.main.db_name
 }
 
-output "rds_master_password" {
-  description = "Generated RDS master password. Add DB_PASSWORD=<value> to your S3 .env file."
-  value       = random_password.db.result
-  sensitive   = true
+output "s3_bucket_name" {
+  description = "S3 bucket name used for uploads and the ECS env file."
+  value       = aws_s3_bucket.api.bucket
 }
 

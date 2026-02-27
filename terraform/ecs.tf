@@ -33,7 +33,7 @@ resource "aws_ecs_task_definition" "api" {
       }]
 
       environmentFiles = [{
-        value = var.env_file_arn
+        value = "${aws_s3_bucket.api.arn}/env_file.env"
         type  = "s3"
       }]
 
@@ -75,21 +75,9 @@ resource "aws_ecs_service" "api" {
     container_port   = 3000
   }
 
-  deployment_circuit_breaker {
-    enable   = true
-    rollback = true
-  }
-
-  depends_on = [
-    aws_lb_listener.https,
-    aws_iam_role_policy_attachment.ecs_execution_managed,
-  ]
+  depends_on = [aws_lb_listener.https]
 
   tags = {
     Name = "${local.prefix}-api-service"
-  }
-
-  lifecycle {
-    ignore_changes = [task_definition, desired_count]
   }
 }

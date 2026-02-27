@@ -41,17 +41,12 @@ variable "api_subdomain" {
   type        = string
   default     = "api"
 }
-variable "env_file_arn" {
-  description = "S3 ARN of the .env file used by the ECS task (e.g. arn:aws:s3:::my-bucket/api.env)."
-  type        = string
-}
 
 variable "service_desired_count" {
   description = "Desired number of ECS task instances."
   type        = number
   default     = 2
 }
-
 
 variable "db_name" {
   description = "Name of the PostgreSQL database."
@@ -63,4 +58,10 @@ variable "db_username" {
   description = "Master username for the RDS instance."
   type        = string
   default     = "portfolio"
+}
+
+variable "db_password" {
+  description = "Master password for the RDS instance."
+  type        = string
+  sensitive   = true
 }
