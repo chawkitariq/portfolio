@@ -1,19 +1,14 @@
-import { useAuthStore } from "@/stores/auth";
+import { API_BASE_URL } from "@/constants/app";
+import { handleAccessTokenInterceptor } from "@/utils/access-token-interceptor";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
+  baseURL: `${API_BASE_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().accessToken;
-  if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
-  }
-  return config;
-});
+api.interceptors.request.use(handleAccessTokenInterceptor);
 
 export default api;
