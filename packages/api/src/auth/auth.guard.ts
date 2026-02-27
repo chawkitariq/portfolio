@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { JwtService } from '@nestjs/jwt';
+import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from 'src/decorators/public.decorator';
 import { AuthAccesTokenPayload } from './auth.type';
@@ -45,9 +45,17 @@ export class AuthGuard implements CanActivate {
         await this.jwtService.verifyAsync(token);
       request['user'] = payload;
     } catch (error) {
-      this.logger.error('Error verifying JWT token:', error);
+      if (error instanceof TokenExpiredError) {
+        this.logger.warn('JWT token has expired');
+        throw new UnauthorizedException('JWT token has expired');
+      } else if (error instanceof JsonWebTokenError) {
+        this.logger.warn('Invalid JWT token');
+        throw new UnauthorizedException('Invalid JWT token');
+      }
+      this.logger.error('Error verifying JWT token', error);
       throw new UnauthorizedException();
     }
+
     return true;
   }
 

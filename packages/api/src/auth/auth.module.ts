@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtSignOptions } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
 
@@ -16,7 +16,12 @@ import { AuthGuard } from './auth.guard';
       imports: [ConfigModule.forRoot()],
       useFactory: (configService: ConfigService) => ({
         secret: configService.getOrThrow<string>('JWT_ACCESS_TOKEN_SECRET'),
-        signOptions: { expiresIn: '1h' },
+        signOptions: {
+          expiresIn: configService.get<JwtSignOptions['expiresIn']>(
+            'JWT_ACCESS_TOKEN_SECRET_EXPIRES_IN',
+            '15m',
+          ),
+        },
       }),
       inject: [ConfigService],
     }),
