@@ -1,0 +1,66 @@
+variable "project_name" {
+  description = "Name of the project. Used in every resource name and tag."
+  type        = string
+  default     = "portfolio"
+}
+
+variable "environment" {
+  description = "Deployment environment (e.g. prod, staging, dev)."
+  type        = string
+  default     = "prod"
+}
+
+variable "aws_region" {
+  description = "AWS region to deploy resources into."
+  type        = string
+  default     = "eu-west-1"
+}
+
+variable "vpc_id" {
+  description = "ID of the existing VPC to deploy into."
+  type        = string
+}
+
+variable "public_subnet_ids" {
+  description = "IDs of existing public subnets (at least 2, one per AZ). Used by the ALB."
+  type        = list(string)
+}
+
+variable "private_subnet_ids" {
+  description = "IDs of existing private subnets (at least 2, one per AZ). Used by ECS tasks and RDS."
+  type        = list(string)
+}
+
+variable "route53_zone_name" {
+  description = "Existing Route 53 hosted zone name (e.g. example.com)."
+  type        = string
+}
+
+variable "api_subdomain" {
+  description = "Subdomain for the API (e.g. api → api.example.com)."
+  type        = string
+  default     = "api"
+}
+variable "env_file_arn" {
+  description = "S3 ARN of the .env file used by the ECS task (e.g. arn:aws:s3:::my-bucket/api.env)."
+  type        = string
+}
+
+variable "service_desired_count" {
+  description = "Desired number of ECS task instances."
+  type        = number
+  default     = 2
+}
+
+
+variable "db_name" {
+  description = "Name of the PostgreSQL database."
+  type        = string
+  default     = "portfolio"
+}
+
+variable "db_username" {
+  description = "Master username for the RDS instance."
+  type        = string
+  default     = "portfolio"
+}
