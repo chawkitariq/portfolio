@@ -52,6 +52,12 @@ COPY --from=deploy /prod ./
 # Compiled output from the build stage
 COPY --from=build /app/packages/api/dist ./dist
 
+COPY ./packages/api/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT [ "docker-entrypoint.sh" ]
+
+USER node
+
 EXPOSE 3000
 
 CMD ["node", "dist/main"]
