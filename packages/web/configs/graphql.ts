@@ -1,5 +1,6 @@
 import { API_BASE_URL } from "@/constants/app";
 import { handleAccessTokenInterceptor } from "@/utils/access-token-interceptor";
+import { handleGraphqlLogoutInterceptor } from "@/utils/graphql-logout-interceptor";
 import axios from "axios";
 
 const graphql = axios.create({
@@ -12,5 +13,6 @@ const graphql = axios.create({
 });
 
 graphql.interceptors.request.use(handleAccessTokenInterceptor);
+graphql.interceptors.response.use(handleGraphqlLogoutInterceptor);
 
 export default graphql;

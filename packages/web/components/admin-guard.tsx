@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const [hasMounted, setHasMounted] = useState(false);
-  const { accessToken } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
 
   useEffect(() => {
     setHasMounted(true);
@@ -16,8 +16,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     return null;
   }
 
-
-  if (!accessToken) {
+  if (!isAuthenticated) {
     return redirect("/sign-in");
   }
 

@@ -1,5 +1,6 @@
 import { API_BASE_URL } from "@/constants/app";
 import { handleAccessTokenInterceptor } from "@/utils/access-token-interceptor";
+import { handleLogoutInterceptor } from "@/utils/logout-interceptor";
 import axios from "axios";
 
 const api = axios.create({
@@ -10,5 +11,6 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(handleAccessTokenInterceptor);
+api.interceptors.response.use((r) => r, handleLogoutInterceptor);
 
 export default api;
