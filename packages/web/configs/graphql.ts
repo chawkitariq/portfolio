@@ -1,8 +1,10 @@
-import { useAuthStore } from "@/stores/auth";
+import { handleAccessTokenInterceptor } from "@/utils/access-token-interceptor";
 import axios from "axios";
 
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL
+
 const graphql = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/graphql`,
+  baseURL: `${baseURL}/graphql`,
   method: "POST",
   headers: {
     Accept: "application/graphql-response+json, application/json",
@@ -10,12 +12,6 @@ const graphql = axios.create({
   },
 });
 
-graphql.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().accessToken;
-  if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
-  }
-  return config;
-});
+graphql.interceptors.request.use(handleAccessTokenInterceptor);
 
 export default graphql;
