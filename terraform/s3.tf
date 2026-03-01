@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "api" {
   bucket = "${local.prefix}-api"
+  force_destroy = true
 
   tags = {
     Name = "${local.prefix}-api"

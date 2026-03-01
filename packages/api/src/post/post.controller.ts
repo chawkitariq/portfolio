@@ -43,10 +43,7 @@ export class PostController {
     this.bucketName = this.configService.getOrThrow<string>('S3_BUCKET_NAME');
     this.appUrl = this.configService.getOrThrow<string>('APP_URL');
 
-    this.s3 = new S3Client({
-      endpoint: this.configService.getOrThrow<string>('S3_ENDPOINT'),
-      forcePathStyle: true,
-    });
+    this.s3 = new S3Client();
   }
 
   @Get('posts')
