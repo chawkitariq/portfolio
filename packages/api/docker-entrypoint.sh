@@ -1,5 +1,5 @@
 #! /bin/sh
 
-pnpm run migration:run
+npm run migration:run
 
 exec "$@"
