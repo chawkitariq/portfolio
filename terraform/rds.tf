@@ -8,6 +8,12 @@ resource "aws_db_subnet_group" "main" {
   }
 }
 
+resource "aws_db_parameter_group" "main" {
+  name        = "${var.project_name}-rds-pg"
+  family      = "postgres17"
+  description = "PostgreSQL parameter group"
+}
+
 resource "aws_db_instance" "main" {
   identifier = "${local.prefix}-db"
   engine         = "postgres"
@@ -22,11 +28,11 @@ resource "aws_db_instance" "main" {
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.rds.id]
   publicly_accessible    = false
-  parameter_group_name = "default.postgres17"
   multi_az = false
   backup_retention_period = 7
   deletion_protection = false
   skip_final_snapshot = true
+  parameter_group_name = aws_db_parameter_group.main.name
 
   tags = {
     Name = "${local.prefix}-db"

@@ -46,7 +46,7 @@ variable "api_subdomain" {
 variable "service_desired_count" {
   description = "Desired number of ECS task instances."
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "db_name" {
