@@ -13,7 +13,7 @@ variable "environment" {
 variable "aws_region" {
   description = "AWS region to deploy resources into."
   type        = string
-  default     = "eu-west-1"
+  default     = "eu-west-3"
 }
 
 variable "vpc_id" {
@@ -34,6 +34,7 @@ variable "private_subnet_ids" {
 variable "route53_zone_name" {
   description = "Existing Route 53 hosted zone name (e.g. example.com)."
   type        = string
+  default = "chawkitariq.fr"
 }
 
 variable "api_subdomain" {

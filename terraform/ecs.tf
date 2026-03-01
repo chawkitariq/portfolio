@@ -1,11 +1,6 @@
 resource "aws_ecs_cluster" "main" {
   name = "${local.prefix}-cluster"
 
-  setting {
-    name  = "containerInsights"
-    value = "enabled"
-  }
-
   tags = {
     Name = "${local.prefix}-cluster"
   }
@@ -26,17 +21,14 @@ resource "aws_ecs_task_definition" "api" {
       name      = "api"
       image     = "${aws_ecr_repository.api.repository_url}:api-latest"
       essential = true
-
       portMappings = [{
-        containerPort = "3000"
+        containerPort = 3000
         protocol      = "tcp"
       }]
-
       environmentFiles = [{
         value = "${aws_s3_bucket.api.arn}/env_file.env"
         type  = "s3"
       }]
-
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -55,10 +47,10 @@ resource "aws_ecs_task_definition" "api" {
 
 resource "aws_ecs_service" "api" {
   name            = "${local.prefix}-api-service"
+  launch_type     = "FARGATE"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.api.arn
   desired_count   = var.service_desired_count
-  launch_type     = "FARGATE"
 
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200

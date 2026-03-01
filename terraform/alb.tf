@@ -25,10 +25,7 @@ resource "aws_lb_target_group" "api" {
     unhealthy_threshold = 3
     timeout             = 5
     interval            = 30
-    matcher             = "200"
   }
-
-  deregistration_delay = 30
 
   tags = {
     Name = "${local.prefix}-tg-api"

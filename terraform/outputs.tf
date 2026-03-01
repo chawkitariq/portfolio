@@ -26,7 +26,6 @@ output "ecs_service_name" {
 output "rds_endpoint" {
   description = "RDS instance endpoint (host:port)."
   value       = "${aws_db_instance.main.address}:${aws_db_instance.main.port}"
-  sensitive   = true
 }
 
 output "rds_db_name" {
