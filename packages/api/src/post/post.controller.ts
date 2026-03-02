@@ -88,6 +88,7 @@ export class PostController {
   }
 
   @Get('assets/:filename')
+  @Public()
   async assets(@Param('filename') filename: string) {
     const command = new GetObjectCommand({
       Bucket: this.bucketName,
