@@ -13,10 +13,12 @@ import { AuthModule } from './auth/auth.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
-      definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
-        outputAs: 'interface',
-      },
+      ...(process.env.NODE_ENV !== 'production' && {
+        definitions: {
+          path: join(process.cwd(), 'src/graphql.ts'),
+          outputAs: 'interface',
+        },
+      }),
     }),
     PostModule,
     DatabaseModule,
