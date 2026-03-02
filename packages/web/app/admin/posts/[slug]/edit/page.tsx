@@ -16,6 +16,10 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useBreadcrumbStore } from "@/stores/breadcrumb";
 import { uploadFile } from "@/api/upload";
 
+type EditPostFormValues = Omit<UpdatePostInput, "thumbnailUrl"> & {
+  thumbnailUrl?: string | File | null;
+};
+
 export default function EditPostPage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
@@ -61,7 +65,7 @@ export default function EditPostPage() {
     return data.url;
   }, []);
 
-  const formik = useFormik<UpdatePostInput>({
+  const formik = useFormik<EditPostFormValues>({
     initialValues: {
       id: post?.id || 0,
       title: post?.title || "",
@@ -71,11 +75,12 @@ export default function EditPostPage() {
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
-      if (values.thumbnailUrl instanceof File) {
-        const { data } = await uploadFile(values.thumbnailUrl);
-        values.thumbnailUrl = data.url;
+      let thumbnailUrl = values.thumbnailUrl;
+      if (thumbnailUrl instanceof File) {
+        const { data } = await uploadFile(thumbnailUrl);
+        thumbnailUrl = data.url;
       }
-      updatePostMutation.mutate(values);
+      updatePostMutation.mutate({ ...values, thumbnailUrl } as UpdatePostInput);
     },
   });
 

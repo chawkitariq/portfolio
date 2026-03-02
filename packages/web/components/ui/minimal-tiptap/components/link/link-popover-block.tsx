@@ -60,6 +60,7 @@ export const LinkPopoverBlock: React.FC<LinkPopoverBlockProps> = ({
           tooltip={copyTitle}
           onClick={handleCopy}
           tooltipOptions={{
+            // @ts-expect-error - Radix types are wrong
             onPointerDownOutside: (e) => {
               if (e.target === e.currentTarget) e.preventDefault()
             },

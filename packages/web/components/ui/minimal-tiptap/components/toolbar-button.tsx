@@ -1,4 +1,5 @@
 import * as React from "react"
+// @ts-expect-error - Radix types are wrong
 import type { TooltipContentProps } from "@radix-ui/react-tooltip"
 import {
   Tooltip,

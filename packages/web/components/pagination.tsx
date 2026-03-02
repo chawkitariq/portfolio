@@ -67,7 +67,6 @@ export default function Pagination({
             aria-label="Go to first page"
             onClick={() => onPageChange(1)}
             size="icon"
-            disabled={!canGoFirst}
             className={!canGoFirst ? "pointer-events-none opacity-50" : ""}
           >
             <ChevronFirst className="h-4 w-4" />
@@ -79,7 +78,6 @@ export default function Pagination({
             aria-label="Go to previous page"
             onClick={() => onPageChange(currentPage - 1)}
             size="icon"
-            disabled={!canGoPrevious}
             className={!canGoPrevious ? "pointer-events-none opacity-50" : ""}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -102,7 +100,6 @@ export default function Pagination({
             aria-label="Go to next page"
             onClick={() => onPageChange(currentPage + 1)}
             size="icon"
-            disabled={!canGoNext}
             className={!canGoNext ? "pointer-events-none opacity-50" : ""}
           >
             <ChevronRight className="h-4 w-4" />
@@ -114,7 +111,6 @@ export default function Pagination({
             aria-label="Go to last page"
             onClick={() => onPageChange(totalPages)}
             size="icon"
-            disabled={!canGoLast}
             className={!canGoLast ? "pointer-events-none opacity-50" : ""}
           >
             <ChevronLast className="h-4 w-4" />

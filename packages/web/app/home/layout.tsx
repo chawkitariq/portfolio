@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { navigation } from "./data.json";
@@ -90,7 +91,7 @@ export default function RootLayout({
                       position: "relative",
                       "--radix-scroll-area-corner-width": "0px",
                       "--radix-scroll-area-corner-height": "0px",
-                    }}
+                    } as CSSProperties & Record<string, string>}
                   >
                     <style>
                       {`[data-radix-scroll-area-viewport] {

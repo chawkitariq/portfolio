@@ -16,6 +16,10 @@ import { useBreadcrumbStore } from "@/stores/breadcrumb";
 import { useCallback, useEffect } from "react";
 import { uploadFile } from "@/api/upload";
 
+type NewPostFormValues = Omit<CreatePostInput, "thumbnailUrl"> & {
+  thumbnailUrl?: string | File;
+};
+
 export default function NewPostPage() {
   const router = useRouter();
 
@@ -49,7 +53,7 @@ export default function NewPostPage() {
     return data.url;
   }, []);
 
-  const formik = useFormik<CreatePostInput>({
+  const formik = useFormik<NewPostFormValues>({
     initialValues: {
       title: "",
       summary: "",
@@ -57,11 +61,12 @@ export default function NewPostPage() {
       thumbnailUrl: undefined,
     },
     onSubmit: async (values) => {
-      if (values.thumbnailUrl instanceof File) {
-        const { data } = await uploadFile(values.thumbnailUrl);
-        values.thumbnailUrl = data.url;
+      let thumbnailUrl = values.thumbnailUrl;
+      if (thumbnailUrl instanceof File) {
+        const { data } = await uploadFile(thumbnailUrl);
+        thumbnailUrl = data.url;
       }
-      createPostMutation.mutate(values);
+      createPostMutation.mutate({ ...values, thumbnailUrl } as CreatePostInput);
     },
   });
 
