@@ -20,7 +20,7 @@ RUN pnpm --filter @portfolio/api build
 FROM base AS deploy
 WORKDIR /app
 COPY --from=build /app ./
-RUN pnpm --filter @portfolio/api deploy --prod /prod
+RUN pnpm --filter @portfolio/api deploy --prod --legacy /prod
 
 # ─── Production ──────────────────────────────────────────────────────────────
 FROM node:24.14-alpine AS production
