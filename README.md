@@ -1,6 +1,8 @@
 # Portfolio
 
-Fullstack monorepo — public blog + admin backoffice.
+Fullstack monorepo used as a personal portfolio, including a blog with backoffice. The backend (NestJS) and frontend (Next.js) work together to provide complete management of content and projects.
+
+DevOps: All infrastructure is managed as code with Terraform (AWS ECS, RDS, S3, ALB, IAM, etc). CI/CD is automated with GitHub Actions (OIDC), enabling zero-downtime deployments, automatic migrations, and secure, keyless delivery to AWS.
 
 | | |
 |---|---|
