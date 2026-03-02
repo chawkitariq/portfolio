@@ -36,6 +36,7 @@ FROM node:24.14-alpine AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV HASH_ROUNDS=12
 ENV DB_LOGGING=false
 ENV DB_SYNCHRONIZE=false
 ENV DB_SSL=true
