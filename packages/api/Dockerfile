@@ -38,13 +38,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV DB_LOGGING=false
 ENV DB_SYNCHRONIZE=false
-
-# Download the AWS RDS global certificate bundle so Node.js trusts the RDS TLS
-# certificate. NODE_EXTRA_CA_CERTS appends it to Node's built-in CA store
-# without requiring any code changes.
-RUN wget -q -O /usr/local/share/rds-global-bundle.pem \
-    https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
-ENV NODE_EXTRA_CA_CERTS=/usr/local/share/rds-global-bundle.pem
+ENV DB_SSL=true
 
 # Production node_modules from the pruned deploy stage
 COPY --from=deploy /prod ./
