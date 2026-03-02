@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "api" {
         protocol      = "tcp"
       }]
       environmentFiles = [{
-        value = "${aws_s3_bucket.api.arn}/env_file.env"
+        value = "${aws_s3_bucket.api.arn}/file_env.env"
         type  = "s3"
       }]
       logConfiguration = {
