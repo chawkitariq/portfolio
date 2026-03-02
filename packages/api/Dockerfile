@@ -39,6 +39,7 @@ ENV NODE_ENV=production
 ENV DB_LOGGING=false
 ENV DB_SYNCHRONIZE=false
 ENV DB_SSL=true
+ENV S3_BUCKET_UPLOAD_PREFIX_KEY=uploads/
 
 # Production node_modules from the pruned deploy stage
 COPY --from=deploy /prod ./

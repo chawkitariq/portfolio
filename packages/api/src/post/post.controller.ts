@@ -3,6 +3,7 @@ import {
   GetObjectCommandOutput,
   PutObjectCommand,
   S3Client,
+  S3ClientConfig,
 } from '@aws-sdk/client-s3';
 import {
   Controller,
@@ -34,6 +35,7 @@ export class PostController {
   private readonly logger = new Logger(PostController.name);
   private readonly s3: S3Client;
   private readonly bucketName: string;
+  private readonly bucketUploadPrefixKey: string;
   private readonly appUrl: string;
 
   constructor(
@@ -41,9 +43,20 @@ export class PostController {
     private readonly configService: ConfigService,
   ) {
     this.bucketName = this.configService.getOrThrow<string>('S3_BUCKET_NAME');
+    this.bucketUploadPrefixKey = this.configService.getOrThrow<string>(
+      'S3_BUCKET_UPLOAD_PREFIX_KEY',
+    );
     this.appUrl = this.configService.getOrThrow<string>('APP_URL');
+    const s3Endpoint = this.configService.get<string>('S3_ENDPOINT');
 
-    this.s3 = new S3Client();
+    const s3ClientConfig: S3ClientConfig = {};
+
+    if (s3Endpoint) {
+      s3ClientConfig.endpoint = s3Endpoint;
+      s3ClientConfig.forcePathStyle = true;
+    }
+
+    this.s3 = new S3Client(s3ClientConfig);
   }
 
   @Get('posts')
@@ -77,7 +90,7 @@ export class PostController {
     const filename = `${uuidv7()}${ext}`;
     const uploadParams = {
       Bucket: this.bucketName,
-      Key: filename,
+      Key: `${this.bucketUploadPrefixKey}${filename}`,
       Body: file.buffer,
       ContentType: file.mimetype,
     };
@@ -92,7 +105,7 @@ export class PostController {
   async assets(@Param('filename') filename: string) {
     const command = new GetObjectCommand({
       Bucket: this.bucketName,
-      Key: filename,
+      Key: `${this.bucketUploadPrefixKey}${filename}`,
     });
     let file: GetObjectCommandOutput | undefined;
     try {
