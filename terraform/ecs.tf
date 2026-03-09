@@ -20,7 +20,7 @@ resource "aws_ecs_task_definition" "api" {
   container_definitions = jsonencode([
     {
       name      = "api"
-      image     = "${aws_ecr_repository.main.repository_url}:api-latest"
+      image     = "${aws_ecr_repository.main.repository_url}:${var.api_image_tag}"
       essential = true
       portMappings = [{
         containerPort = 3000
@@ -89,7 +89,7 @@ resource "aws_ecs_task_definition" "web" {
   container_definitions = jsonencode([
     {
       name      = "web"
-      image     = "${aws_ecr_repository.main.repository_url}:web-latest"
+      image     = "${aws_ecr_repository.main.repository_url}:${var.web_image_tag}"
       essential = true
       portMappings = [{
         containerPort = 3000

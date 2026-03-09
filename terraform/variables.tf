@@ -72,3 +72,15 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "api_image_tag" {
+  description = "Tag of the API image to deploy (e.g. 'latest' or 'v1.0.0')."
+  type        = string
+  default     = "api-latest"
+}
+
+variable "web_image_tag" {
+  description = "Tag of the web image to deploy (e.g. 'latest' or 'v1.0.0')."
+  type        = string
+  default     = "web-latest"
+}
