@@ -34,7 +34,7 @@ variable "private_subnet_ids" {
 variable "route53_zone_name" {
   description = "Existing Route 53 hosted zone name (e.g. example.com)."
   type        = string
-  default = "chawkitariq.fr"
+  default     = "chawkitariq.fr"
 }
 
 variable "api_subdomain" {

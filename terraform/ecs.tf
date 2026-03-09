@@ -14,8 +14,8 @@ resource "aws_ecs_task_definition" "api" {
   network_mode             = "awsvpc"
   cpu                      = 256
   memory                   = 512
-  execution_role_arn       = aws_iam_role.ecs_execution.arn
-  task_role_arn            = aws_iam_role.ecs_task.arn
+  execution_role_arn       = aws_iam_role.ecs_execution_api.arn
+  task_role_arn            = aws_iam_role.ecs_task_api.arn
 
   container_definitions = jsonencode([
     {
@@ -83,8 +83,8 @@ resource "aws_ecs_task_definition" "web" {
   network_mode             = "awsvpc"
   cpu                      = 512
   memory                   = 1024
-  execution_role_arn       = aws_iam_role.ecs_execution.arn
-  task_role_arn            = aws_iam_role.ecs_task.arn
+  execution_role_arn       = aws_iam_role.ecs_execution_web.arn
+  task_role_arn            = aws_iam_role.ecs_task_web.arn
 
   container_definitions = jsonencode([
     {
