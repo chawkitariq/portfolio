@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 const services = [
@@ -84,14 +85,6 @@ const services = [
   },
 ];
 
-const deliverables = [
-  "SaaS platforms",
-  "Scalable web applications",
-  "Mobile apps",
-  "Cloud-native systems",
-  "Production-ready infrastructures",
-];
-
 export default function Services() {
   return (
     <div className="w-full">
@@ -138,12 +131,7 @@ export default function Services() {
                 </ul>
                 <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border">
                   {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-muted text-muted-foreground rounded-md px-2 py-0.5 text-xs font-medium"
-                    >
-                      {tag}
-                    </span>
+                    <Badge key={tag} variant="secondary">{tag}</Badge>
                   ))}
                 </div>
               </CardContent>
