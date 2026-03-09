@@ -1,6 +1,8 @@
 import { findOneBlogPost } from "@/api/post";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +25,14 @@ export default async function BlogPostDetail({
 
   return (
     <article className="container max-w-4xl py-8 lg:py-12">
+      {/* Back Link */}
+      <Link href="/home/blog" className="inline-block mb-8">
+        <Button variant="ghost" size="sm" className="gap-2">
+          <ArrowLeft className="h-4 w-4" />
+          Retour au blog
+        </Button>
+      </Link>
+
       {/* Header Section */}
       <header className="space-y-4 mb-8">
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
