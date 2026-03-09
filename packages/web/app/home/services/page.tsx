@@ -109,30 +109,8 @@ export default function Services() {
         </div>
       </section>
 
-      {/* What I can help you build */}
-      <section className="bg-muted/30 py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-2xl font-semibold text-center">
-              Ce que je peux vous aider à construire
-            </h2>
-            <ul className="flex flex-wrap gap-x-8 gap-y-2 justify-center">
-              {deliverables.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-center gap-2 text-muted-foreground"
-                >
-                  <span className="bg-primary h-1.5 w-1.5 rounded-full shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
       {/* Services Grid */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
             <Card

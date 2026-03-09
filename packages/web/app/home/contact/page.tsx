@@ -16,12 +16,6 @@ import { Github, Linkedin, Mail, MapPin } from "lucide-react";
 
 const contactInfo = [
   {
-    icon: Mail,
-    title: "Email",
-    value: "contact@chawkitariq.dev",
-    link: "mailto:contact@chawkitariq.dev",
-  },
-  {
     icon: Linkedin,
     title: "LinkedIn",
     value: "linkedin.com/in/chawkitariq",
@@ -36,7 +30,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Localisation",
-    value: "Paris, France",
+    value: "Perpignan, France",
     link: null,
   },
 ];

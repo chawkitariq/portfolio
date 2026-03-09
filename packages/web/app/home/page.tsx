@@ -55,24 +55,22 @@ export default function Home() {
       </section>
 
       {/* Features Grid */}
-      <section className="bg-muted/30 py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {features.map((feature) => (
-              <Card
-                key={feature.title}
-                className="border-border/50 hover:shadow-lg transition-shadow"
-              >
-                <CardContent className="p-6 space-y-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <feature.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-muted/30">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {features.map((feature) => (
+            <Card
+              key={feature.title}
+              className="border-border/50 hover:shadow-lg transition-shadow"
+            >
+              <CardContent className="p-6 space-y-4">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <feature.icon className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 

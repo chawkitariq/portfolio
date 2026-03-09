@@ -18,7 +18,7 @@ export default async function BlogPostDetail({
   if (!post) {
     return (
       <div className="container max-w-4xl py-16 text-center">
-        <h1 className="text-2xl font-semibold">Post not found</h1>
+        <h1 className="text-2xl font-semibold">Article introuvable</h1>
       </div>
     );
   }
@@ -39,7 +39,7 @@ export default async function BlogPostDetail({
           <div className="flex items-center gap-1.5">
             <Calendar className="h-4 w-4" />
             <time dateTime={post.createdAt}>
-              {new Date(+post.createdAt).toLocaleDateString("en-US", {
+              {new Date(+post.createdAt).toLocaleDateString("fr-FR", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -49,7 +49,7 @@ export default async function BlogPostDetail({
           <span className="h-1 w-1 rounded-full bg-muted-foreground" />
           <div className="flex items-center gap-1.5">
             <Clock className="h-4 w-4" />
-            <span>5 min read</span>
+            <span>5 min de lecture</span>
           </div>
         </div>
 
@@ -88,9 +88,9 @@ export default async function BlogPostDetail({
       {/* Footer Section */}
       <footer className="flex items-center justify-between text-sm text-muted-foreground">
         <div>
-          Last updated:{" "}
+          Dernière mise à jour :{" "}
           <time dateTime={post.updatedAt}>
-            {new Date(+post.updatedAt).toLocaleDateString("en-US", {
+            {new Date(+post.updatedAt).toLocaleDateString("fr-FR", {
               year: "numeric",
               month: "long",
               day: "numeric",

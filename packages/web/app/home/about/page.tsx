@@ -59,7 +59,7 @@ export default function About() {
 
           {/* Bio */}
           <Card className="border-border/50">
-            <CardContent className="p-8 space-y-4">
+            <CardContent className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
                 J&apos;aide les startups et entreprises à concevoir, construire et
                 déployer des produits numériques fiables de bout en bout — des
