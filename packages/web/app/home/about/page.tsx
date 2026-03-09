@@ -18,25 +18,18 @@ const skills = [
 
 const experiences = [
   {
-    title: "Full-Stack Cloud Engineer",
-    company: "Freelance",
-    period: "2022 - Présent",
+    title: "Ingénieur Full-Stack & DevOps",
+    company: "Meetdeal, Rivesaltes — Hybride / Remote",
+    period: "2023 – Présent",
     description:
-      "Conception, développement et déploiement d'applications web scalables et d'infrastructures cloud pour des startups et entreprises.",
+      "Développement full-stack des applications métiers et outils internes avec React, NestJS et TypeScript, conception d'APIs REST et GraphQL, construction de l'infrastructure AWS avec CI/CD automatisés, et livraison de projets clés : CTA Dashboard, tableau de bord de supervision, messagerie cross-plateforme et applications Zendesk.",
   },
   {
-    title: "Développeur Full-Stack Senior",
-    company: "TechCorp",
-    period: "2020 - 2022",
+    title: "Side Projects & Expérience personnelle",
+    company: "Personnel",
+    period: "2019 – Présent",
     description:
-      "Développement d'applications web modernes avec React, NestJS et AWS. Direction d'équipe technique et mise en place de pipelines CI/CD.",
-  },
-  {
-    title: "Développeur Front-End",
-    company: "DesignStudio",
-    period: "2018 - 2020",
-    description:
-      "Création d'interfaces utilisateur performantes et accessibles avec React et TypeScript.",
+      "Développement d'applications full-stack (SaaS, Mobile, PWA) avec NestJS, React et React Native, déploiement sur AWS avec Terraform et CI/CD, conception de modèles IA/ML sur SageMaker avec pratiques MLOps, et contributions open source incluant une stack DevOps complète et une bibliothèque Angular de validation de formulaires.",
   },
 ];
 
