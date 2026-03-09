@@ -9,90 +9,74 @@ export default function About() {
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground">
             <span className="font-semibold text-foreground">
-              Fullstack & DevOps Engineer
+              Full-Stack Cloud Engineer
             </span>{" "}
-            specializing in{" "}
-            <span className="font-semibold text-foreground">NestJS</span>,{" "}
-            <span className="font-semibold text-foreground">React</span>, and{" "}
-            <span className="font-semibold text-foreground">AWS</span>
-          </p>
-          <p className="text-lg text-muted-foreground">
-            I build scalable backend services, fullstack applications, and cloud
+            specializing in building scalable applications and modern cloud
             infrastructure.
           </p>
         </div>
 
         <hr className="border-muted" />
 
-        {/* Tech Stack */}
-        <div className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
-            🔧 Tech Stack
-          </h2>
-          <div className="space-y-3">
-            <div>
-              <span className="font-semibold">Backend:</span>{" "}
-              <span className="text-muted-foreground">
-                Node.js • NestJS • TypeScript • Python • GraphQL • REST •
-                SQL/NoSQL
-              </span>
-            </div>
-            <div>
-              <span className="font-semibold">Frontend:</span>{" "}
-              <span className="text-muted-foreground">
-                React • React Native • Vue.js • Nuxt.js • Angular
-              </span>
-            </div>
-            <div>
-              <span className="font-semibold">Cloud/DevOps:</span>{" "}
-              <span className="text-muted-foreground">
-                AWS • Terraform • Docker • Kubernetes • GitHub Actions • GitLab
-                CI
-              </span>
-            </div>
-            <div>
-              <span className="font-semibold">AI/ML:</span>{" "}
-              <span className="text-muted-foreground">
-                MLOps • AWS SageMaker • Machine Learning pipelines
-              </span>
-            </div>
-          </div>
+        {/* Bio */}
+        <div className="space-y-4 text-muted-foreground leading-relaxed text-base md:text-lg">
+          <p>
+            I help startups and companies design, build, and deploy reliable
+            digital products from end to end — from frontend interfaces to
+            backend services and production-ready cloud environments.
+          </p>
+          <p>
+            My work combines product engineering, software architecture, and
+            DevOps practices to deliver systems that are performant,
+            maintainable, and ready to scale.
+          </p>
+          <p>
+            I primarily work with{" "}
+            <span className="font-semibold text-foreground">React</span> and{" "}
+            <span className="font-semibold text-foreground">Next.js</span> for
+            frontend development,{" "}
+            <span className="font-semibold text-foreground">NestJS</span> for
+            backend services, and cloud-native infrastructure on{" "}
+            <span className="font-semibold text-foreground">AWS</span> using{" "}
+            <span className="font-semibold text-foreground">Docker</span>,{" "}
+            <span className="font-semibold text-foreground">Kubernetes</span>,
+            and{" "}
+            <span className="font-semibold text-foreground">Terraform</span>,
+            with automated CI/CD pipelines powered by{" "}
+            <span className="font-semibold text-foreground">
+              GitHub Actions
+            </span>{" "}
+            and{" "}
+            <span className="font-semibold text-foreground">GitLab CI</span>.
+          </p>
         </div>
 
         <hr className="border-muted" />
 
-        {/* What I'm doing */}
-        <div className="space-y-4">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
-            💼 What I&apos;m doing
-          </h2>
-          <ul className="space-y-2">
-            <li className="flex items-start gap-2">
-              <span className="mt-1">🏢</span>
-              <span>
-                Fullstack & DevOps Engineer at{" "}
-                <span className="font-semibold">Meetdeal</span> (hybrid remote)
+        {/* Technologies */}
+        <div className="space-y-3">
+          <h2 className="text-xl font-semibold">Technologies</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "React",
+              "Next.js",
+              "NestJS",
+              "GraphQL",
+              "Amazon Web Services",
+              "Docker",
+              "Kubernetes",
+              "Terraform",
+              "GitHub Actions",
+              "GitLab CI/CD",
+            ].map((tech) => (
+              <span
+                key={tech}
+                className="bg-muted text-muted-foreground rounded-md px-3 py-1 text-sm font-medium"
+              >
+                {tech}
               </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">🚀</span>
-              <span>
-                Building fullstack apps (React + NestJS) and deploying on AWS
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">🛠️</span>
-              <span>Contributing to open source</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">✍️</span>
-              <span>Writing technical articles on LinkedIn</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1">📚</span>
-              <span>Exploring MLOps and production ML workflows</span>
-            </li>
-          </ul>
+            ))}
+          </div>
         </div>
       </div>
     </div>

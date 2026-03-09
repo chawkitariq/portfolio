@@ -39,7 +39,7 @@ export default function RootLayout({
               className="text-muted-foreground text-base md:text-xl"
               style={{ filter: "blur(0px)", opacity: 1, transform: "none" }}
             >
-              Fullstack & DevOps Engineer specializing in NestJS, React, and AWS
+              Full-Stack Cloud Engineer — scalable applications &amp; modern cloud infrastructure
             </p>
             <div style={{ filter: "blur(0px)", opacity: 1, transform: "none" }}>
               <a
