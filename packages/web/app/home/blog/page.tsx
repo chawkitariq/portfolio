@@ -19,7 +19,12 @@ export default async function Blog() {
       className="flex-1 outline-none mt-0"
     >
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
-        {posts.map((post) => (
+        {posts.length === 0 ? (
+          <p className="text-muted-foreground col-span-full text-center py-16">
+            No posts yet. Check back soon!
+          </p>
+        ) : (
+          posts.map((post) => (
           <div
             style={{ filter: "blur(0px)", opacity: 1, transform: "none" }}
             key={post.id}
@@ -58,7 +63,8 @@ export default async function Blog() {
               </Link>
             </div>
           </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
