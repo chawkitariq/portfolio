@@ -38,9 +38,15 @@ variable "route53_zone_name" {
 }
 
 variable "api_subdomain" {
-  description = "Subdomain for the API (e.g. api → api.example.com)."
+  description = "Subdomain for the API (e.g. api → api.portfolio.example.com)."
   type        = string
   default     = "api"
+}
+
+variable "web_subdomain" {
+  description = "Subdomain for the web frontend (e.g. portfolio → portfolio.example.com)."
+  type        = string
+  default     = "portfolio"
 }
 
 variable "service_desired_count" {

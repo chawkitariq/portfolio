@@ -1,6 +1,11 @@
-output "ecr_repository_url" {
-  description = "ECR repository URL. Push images with tag 'api-latest'."
-  value       = aws_ecr_repository.api.repository_url
+output "ecr_main_repository_url" {
+  description = "ECR repository URL for the main repository. Push images with tag 'latest'."
+  value       = aws_ecr_repository.main.repository_url
+}
+
+output "web_url" {
+  description = "Public URL of the web frontend."
+  value       = "https://${local.web_fqdn}"
 }
 
 output "api_url" {
@@ -9,8 +14,8 @@ output "api_url" {
 }
 
 output "alb_dns_name" {
-  description = "DNS name of the Application Load Balancer."
-  value       = aws_lb.api.dns_name
+  description = "DNS name of the shared Application Load Balancer."
+  value       = aws_lb.main.dns_name
 }
 
 output "ecs_cluster_name" {
@@ -18,9 +23,14 @@ output "ecs_cluster_name" {
   value       = aws_ecs_cluster.main.name
 }
 
-output "ecs_service_name" {
-  description = "Name of the ECS service."
+output "ecs_api_service_name" {
+  description = "Name of the API ECS service."
   value       = aws_ecs_service.api.name
+}
+
+output "ecs_web_service_name" {
+  description = "Name of the web ECS service."
+  value       = aws_ecs_service.web.name
 }
 
 output "rds_endpoint" {
@@ -34,7 +44,6 @@ output "rds_db_name" {
 }
 
 output "s3_bucket_name" {
-  description = "S3 bucket name used for uploads and the ECS env file."
+  description = "S3 bucket name used for uploads and ECS env files."
   value       = aws_s3_bucket.api.bucket
 }
-

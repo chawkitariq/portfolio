@@ -15,17 +15,17 @@ data "aws_ecr_lifecycle_policy_document" "keep_last_10" {
   }
 }
 
-resource "aws_ecr_repository" "api" {
-  name                 = "${local.prefix}-api"
+resource "aws_ecr_repository" "main" {
+  name                 = "${local.prefix}-main"
   image_tag_mutability = "MUTABLE"
-  force_delete = true
+  force_delete         = true
 
   tags = {
-    Name = "${local.prefix}-api"
+    Name = "${local.prefix}-main"
   }
 }
 
-resource "aws_ecr_lifecycle_policy" "api" {
-  repository = aws_ecr_repository.api.name
+resource "aws_ecr_lifecycle_policy" "main" {
+  repository = aws_ecr_repository.main.name
   policy     = data.aws_ecr_lifecycle_policy_document.keep_last_10.json
 }

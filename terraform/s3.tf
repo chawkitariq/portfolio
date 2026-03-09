@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "api" {
-  bucket = "${local.prefix}-api"
+  bucket        = "${local.prefix}-api"
   force_destroy = true
 
   tags = {
@@ -10,6 +10,12 @@ resource "aws_s3_bucket" "api" {
 resource "aws_s3_object" "uploads" {
   bucket  = aws_s3_bucket.api.id
   key     = "uploads/"
+  content = ""
+}
+
+resource "aws_s3_object" "env" {
+  bucket  = aws_s3_bucket.api.id
+  key     = "env/"
   content = ""
 }
 
