@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useFormik } from "formik";
+import { object, string } from "yup";
 import {
   Card,
   CardContent,
@@ -11,8 +12,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Github, Linkedin, Mail, MapPin } from "lucide-react";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Github, Linkedin, MapPin } from "lucide-react";
+import { toast } from "sonner";
 
 const contactInfo = [
   {
@@ -35,27 +42,35 @@ const contactInfo = [
   },
 ];
 
+const validationSchema = object({
+  name: string()
+    .min(2, "Le nom doit contenir au moins 2 caractères")
+    .required("Le nom est requis"),
+  email: string()
+    .email("Adresse email invalide")
+    .required("L'email est requis"),
+  subject: string()
+    .min(3, "Le sujet doit contenir au moins 3 caractères")
+    .required("Le sujet est requis"),
+  message: string()
+    .min(10, "Le message doit contenir au moins 10 caractères")
+    .required("Le message est requis"),
+});
+
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    validationSchema,
+    onSubmit: (_values, { resetForm }) => {
+      toast.success("Merci pour votre message ! Je vous répondrai dans les plus brefs délais.");
+      resetForm();
+    },
   });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(
-      "Merci pour votre message ! Je vous répondrai dans les plus brefs délais.",
-    );
-    setFormData({ name: "", email: "", subject: "", message: "" });
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   return (
     <div className="w-full">
@@ -121,62 +136,85 @@ export default function Contact() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Nom complet</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="Jean Dupont"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                      />
+                <form onSubmit={formik.handleSubmit}>
+                  <FieldGroup>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <Field>
+                        <FieldLabel htmlFor="name">Nom complet</FieldLabel>
+                        <Input
+                          {...formik.getFieldProps("name")}
+                          id="name"
+                          placeholder="Jean Dupont"
+                          aria-invalid={
+                            formik.touched.name && !!formik.errors.name
+                          }
+                        />
+                        {formik.touched.name && formik.errors.name && (
+                          <FieldDescription className="text-destructive">
+                            {formik.errors.name}
+                          </FieldDescription>
+                        )}
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor="email">Email</FieldLabel>
+                        <Input
+                          {...formik.getFieldProps("email")}
+                          id="email"
+                          type="email"
+                          placeholder="jean.dupont@email.com"
+                          aria-invalid={
+                            formik.touched.email && !!formik.errors.email
+                          }
+                        />
+                        {formik.touched.email && formik.errors.email && (
+                          <FieldDescription className="text-destructive">
+                            {formik.errors.email}
+                          </FieldDescription>
+                        )}
+                      </Field>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                    <Field>
+                      <FieldLabel htmlFor="subject">Sujet</FieldLabel>
                       <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="jean.dupont@email.com"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
+                        {...formik.getFieldProps("subject")}
+                        id="subject"
+                        placeholder="Discussion sur un projet"
+                        aria-invalid={
+                          formik.touched.subject && !!formik.errors.subject
+                        }
                       />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="subject">Sujet</Label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      placeholder="Discussion sur un projet"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      placeholder="Parlez-moi de votre projet..."
-                      rows={6}
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full md:w-auto"
-                  >
-                    Envoyer le message
-                  </Button>
+                      {formik.touched.subject && formik.errors.subject && (
+                        <FieldDescription className="text-destructive">
+                          {formik.errors.subject}
+                        </FieldDescription>
+                      )}
+                    </Field>
+                    <Field>
+                      <FieldLabel htmlFor="message">Message</FieldLabel>
+                      <Textarea
+                        {...formik.getFieldProps("message")}
+                        id="message"
+                        placeholder="Parlez-moi de votre projet..."
+                        rows={6}
+                        aria-invalid={
+                          formik.touched.message && !!formik.errors.message
+                        }
+                      />
+                      {formik.touched.message && formik.errors.message && (
+                        <FieldDescription className="text-destructive">
+                          {formik.errors.message}
+                        </FieldDescription>
+                      )}
+                    </Field>
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="w-full md:w-auto"
+                      disabled={formik.isSubmitting}
+                    >
+                      Envoyer le message
+                    </Button>
+                  </FieldGroup>
                 </form>
               </CardContent>
             </Card>
