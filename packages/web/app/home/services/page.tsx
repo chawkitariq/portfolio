@@ -7,11 +7,12 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Code2, Server, Cloud, GitBranch, FileCode2, Smartphone } from "lucide-react";
 import Link from "next/link";
 
 const services = [
   {
-    icon: "🚀",
+    icon: Code2,
     title: "Développement d'Applications Full-Stack",
     description: "Développement de bout en bout d'applications web modernes.",
     includes: [
@@ -24,7 +25,7 @@ const services = [
     tags: ["React", "Next.js", "NestJS"],
   },
   {
-    icon: "⚙️",
+    icon: Server,
     title: "Systèmes Backend & APIs",
     description:
       "Conception et mise en œuvre de services backend robustes.",
@@ -37,7 +38,7 @@ const services = [
     tags: ["NestJS"],
   },
   {
-    icon: "☁️",
+    icon: Cloud,
     title: "Infrastructure Cloud",
     description: "Conception et déploiement d'environnements cloud scalables.",
     includes: [
@@ -49,7 +50,7 @@ const services = [
     tags: ["Amazon Web Services", "Docker", "Kubernetes"],
   },
   {
-    icon: "🔄",
+    icon: GitBranch,
     title: "Automatisation DevOps & CI/CD",
     description: "Automatisation des workflows de développement et de déploiement.",
     includes: [
@@ -61,7 +62,7 @@ const services = [
     tags: ["GitHub Actions", "GitLab CI/CD"],
   },
   {
-    icon: "🏗",
+    icon: FileCode2,
     title: "Infrastructure as Code",
     description:
       "Provisionnement d'infrastructure via des configurations en code.",
@@ -73,7 +74,7 @@ const services = [
     tags: ["Terraform"],
   },
   {
-    icon: "📱",
+    icon: Smartphone,
     title: "Applications Mobiles Cross-Platform",
     description: "Applications mobiles construites à partir d'une base de code unique.",
     includes: [
@@ -111,7 +112,9 @@ export default function Services() {
               className="border-border/50 hover:shadow-lg transition-shadow flex flex-col"
             >
               <CardHeader>
-                <div className="text-3xl mb-2">{service.icon}</div>
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                  <service.icon className="w-5 h-5 text-primary" />
+                </div>
                 <CardTitle>{service.title}</CardTitle>
                 <CardDescription className="leading-relaxed">
                   {service.description}
