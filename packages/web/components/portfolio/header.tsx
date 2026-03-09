@@ -48,7 +48,7 @@ export default function PortfolioHeader() {
           <button
             className="md:hidden p-2 rounded-md hover:bg-accent"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label="Ouvrir le menu"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
