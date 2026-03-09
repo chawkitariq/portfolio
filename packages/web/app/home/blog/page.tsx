@@ -1,5 +1,7 @@
-import { findAllBlogPost, findAllPost } from "@/api/post";
+import { findAllBlogPost } from "@/api/post";
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 
 export default async function Blog() {
   const response = await findAllBlogPost();
