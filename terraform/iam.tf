@@ -31,6 +31,11 @@ data "aws_iam_policy_document" "ecs_execution_api_s3_env" {
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.api.arn}/env/api_file_env.env"]
   }
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetBucketLocation"]
+    resources = [aws_s3_bucket.api.arn]
+  }
 }
 
 resource "aws_iam_role_policy" "ecs_execution_api_s3_env" {
@@ -60,6 +65,11 @@ data "aws_iam_policy_document" "ecs_execution_web_s3_env" {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.api.arn}/env/web_file_env.env"]
+  }
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetBucketLocation"]
+    resources = [aws_s3_bucket.api.arn]
   }
 }
 
