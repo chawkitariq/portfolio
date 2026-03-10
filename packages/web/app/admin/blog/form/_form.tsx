@@ -15,6 +15,13 @@ import { useCallback } from "react";
 import { uploadFile } from "@/api/upload";
 import { useFormik } from "formik";
 import { CreatePostInput, UpdatePostInput } from "@portfolio/api";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarWithPresets } from "@/components/calendar-with-presets";
+import { format } from "date-fns";
 
 type PostInput = CreatePostInput | UpdatePostInput;
 
@@ -106,14 +113,29 @@ export default function Form<T extends PostInput = PostInput>({
         />
       </Field>
 
-      <Field>
-        <FieldLabel htmlFor="publishedAt">Publish Date</FieldLabel>
-        <Input
-          {...form.getFieldProps("publishedAt")}
-          id="publishedAt"
-          type="datetime-local"
-          aria-invalid={form.touched.publishedAt && !!form.errors.publishedAt}
-        />
+      <Field className="w-44">
+        <FieldLabel htmlFor="date-picker-simple">Publish Date</FieldLabel>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              id="date-picker-simple"
+              className="justify-start font-normal"
+            >
+              {form.values.publishedAt ? (
+                format(form.values.publishedAt, "PPP")
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <CalendarWithPresets
+              value={new Date(form.values.publishedAt!)}
+              onChange={(date) => form.setFieldValue("publishedAt", date)}
+            />
+          </PopoverContent>
+        </Popover>
         {form.touched.publishedAt && form.errors.publishedAt && (
           <FieldDescription className="text-destructive">
             {String(form.errors.publishedAt)}
