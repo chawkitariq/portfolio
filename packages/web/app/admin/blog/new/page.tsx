@@ -1,31 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { CreatePostInput } from "@portfolio/api";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/api/post";
-import { MinimalTiptapEditor } from "@/components/ui/minimal-tiptap";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useBreadcrumbStore } from "@/stores/breadcrumb";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { uploadFile } from "@/api/upload";
-import { object, string } from "yup";
-
-const validationSchema = object({
-  title: string().required("Title is required"),
-  summary: string().required("Summary is required"),
-  content: string().required("Content is required"),
-});
-
-type NewPostFormValues = Omit<CreatePostInput, "thumbnailUrl"> & {
-  thumbnailUrl?: string | File;
-};
+import { validationSchema } from "../form/validation-schema";
+import Form, { BlogPostFormThumbnailUrl } from "../form/_form";
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -55,19 +41,14 @@ export default function NewPostPage() {
     },
   });
 
-  const handleUploader = useCallback(async (file: File): Promise<string> => {
-    const { data } = await uploadFile(file);
-    return data.url;
-  }, []);
-
-  const formik = useFormik<NewPostFormValues>({
+  const formik = useFormik<BlogPostFormThumbnailUrl<CreatePostInput>>({
     initialValues: {
       title: "",
       summary: "",
       content: "",
       thumbnailUrl: undefined,
     },
-    validationSchema,
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       let thumbnailUrl = values.thumbnailUrl;
       if (thumbnailUrl instanceof File) {
@@ -88,81 +69,14 @@ export default function NewPostPage() {
           </p>
         </div>
 
-        <form onSubmit={formik.handleSubmit} className="space-y-6">
-          <FieldGroup>
-          <Field>
-            <FieldLabel htmlFor="title">Title</FieldLabel>
-            <Input
-              {...formik.getFieldProps("title")}
-              id="title"
-              type="text"
-              placeholder="Enter post title"
-              aria-invalid={formik.touched.title && !!formik.errors.title}
-            />
-            {formik.touched.title && formik.errors.title && (
-              <FieldDescription className="text-destructive">
-                {formik.errors.title}
-              </FieldDescription>
-            )}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="summary">Summary</FieldLabel>
-            <Textarea
-              {...formik.getFieldProps("summary")}
-              id="summary"
-              placeholder="Brief summary of the post"
-              rows={3}
-              aria-invalid={formik.touched.summary && !!formik.errors.summary}
-            />
-            {formik.touched.summary && formik.errors.summary && (
-              <FieldDescription className="text-destructive">
-                {formik.errors.summary}
-              </FieldDescription>
-            )}
-          </Field>
-          </FieldGroup>
-
-          <Field>
-            <FieldLabel>Content</FieldLabel>
-            <MinimalTiptapEditor
-              value={formik.values.content}
-              onChange={(value) => formik.setFieldValue("content", value)}
-              className="w-full"
-              editorContentClassName="p-5 h-[800px] overflow-y-scroll"
-              output="html"
-              placeholder="Post content"
-              editable={true}
-              editorClassName="focus:outline-hidden"
-              uploader={handleUploader}
-            />
-            {formik.touched.content && formik.errors.content && (
-              <FieldDescription className="text-destructive">
-                {formik.errors.content}
-              </FieldDescription>
-            )}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="thumbnailUrl">Thumbnail</FieldLabel>
-            <Input
-              onChange={(e) =>
-                formik.setFieldValue("thumbnailUrl", e.target.files?.[0])
-              }
-              id="thumbnailUrl"
-              type="file"
-            />
-          </Field>
-
-          <div className="flex gap-4">
+        <Form
+          form={formik}
+          submitButtonRender={() => (
             <Button type="submit" disabled={createPostMutation.isPending}>
               {createPostMutation.isPending ? "Creating..." : "Create Post"}
             </Button>
-            <Button type="button" variant="outline" asChild>
-              <Link href="/admin/blog">Cancel</Link>
-            </Button>
-          </div>
-        </form>
+          )}
+        />
       </div>
     </div>
   );
