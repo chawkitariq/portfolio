@@ -1,5 +1,6 @@
-import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MaltIcon } from "../malt-icon";
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/chawkitariq", label: "Github" },
@@ -8,8 +9,11 @@ const socialLinks = [
     href: "https://linkedin.com/in/chawkitariq",
     label: "LinkedIn",
   },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-  { icon: Mail, href: "mailto:contact@chawkitariq.dev", label: "Email" },
+  {
+    icon: MaltIcon,
+    href: "https://www.malt.fr/profile/tariqchawki",
+    label: "Malt",
+  },
 ];
 
 export default function PortfolioFooter() {

@@ -18,8 +18,9 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Github, Linkedin, MapPin } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import { toast } from "sonner";
+import { MaltIcon } from "@/components/malt-icon";
 
 const contactInfo = [
   {
@@ -35,10 +36,10 @@ const contactInfo = [
     link: "https://github.com/chawkitariq",
   },
   {
-    icon: MapPin,
-    title: "Localisation",
-    value: "Perpignan, France",
-    link: null,
+    icon: MaltIcon,
+    title: "Malt",
+    value: "malt.fr/profile/tariqchawki",
+    link: "https://www.malt.fr/profile/tariqchawki",
   },
 ];
 
@@ -67,7 +68,9 @@ export default function Contact() {
     },
     validationSchema,
     onSubmit: (_values, { resetForm }) => {
-      toast.success("Merci pour votre message ! Je vous répondrai dans les plus brefs délais.");
+      toast.success(
+        "Merci pour votre message ! Je vous répondrai dans les plus brefs délais.",
+      );
       resetForm();
     },
   });
@@ -81,8 +84,8 @@ export default function Contact() {
             Contact
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Un projet en tête ? N&apos;hésitez pas à me contacter. Je serai
-            ravi d&apos;échanger avec vous.
+            Un projet en tête ? N&apos;hésitez pas à me contacter. Je serai ravi
+            d&apos;échanger avec vous.
           </p>
         </div>
       </section>
