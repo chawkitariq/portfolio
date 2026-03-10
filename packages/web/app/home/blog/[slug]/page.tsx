@@ -36,21 +36,27 @@ export default async function BlogPostDetail({
       {/* Header Section */}
       <header className="space-y-4 mb-8">
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5">
-            <Calendar className="h-4 w-4" />
-            <time dateTime={post.createdAt}>
-              {new Date(post.createdAt).toLocaleDateString("fr-FR", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </time>
-          </div>
-          <span className="h-1 w-1 rounded-full bg-muted-foreground" />
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4" />
-            <span>5 min de lecture</span>
-          </div>
+          {post.publishedAt && (
+            <div className="flex items-center gap-1.5">
+              <Calendar className="h-4 w-4" />
+              <time dateTime={post.publishedAt}>
+                {new Date(post.publishedAt).toLocaleDateString("fr-FR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            </div>
+          )}
+          {post.readDuration && (
+            <>
+              <span className="h-1 w-1 rounded-full bg-muted-foreground" />
+              <div className="flex items-center gap-1.5">
+                <Clock className="h-4 w-4" />
+                <span>{post.readDuration} min de lecture</span>
+              </div>
+            </>
+          )}
         </div>
 
         <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">
