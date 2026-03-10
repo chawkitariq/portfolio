@@ -4,6 +4,7 @@ type Post {
   thumbnailUrl: String
   summary: String!
   content: String!
+  readDuration: Int!
   publishedAt: String!
   createdAt: String!
   updatedAt: String!

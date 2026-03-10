@@ -13,6 +13,7 @@ export interface CreatePostInput {
     thumbnailUrl?: Nullable<string>;
     summary: string;
     content: string;
+    publishedAt: string;
 }
 
 export interface UpdatePostInput {
@@ -21,7 +22,7 @@ export interface UpdatePostInput {
     thumbnailUrl?: Nullable<string>;
     summary?: Nullable<string>;
     content?: Nullable<string>;
-    publishedAt: string;
+    publishedAt?: Nullable<string>;
 }
 
 export interface Post {
@@ -30,6 +31,7 @@ export interface Post {
     thumbnailUrl?: Nullable<string>;
     summary: string;
     content: string;
+    readDuration: number;
     publishedAt: string;
     createdAt: string;
     updatedAt: string;

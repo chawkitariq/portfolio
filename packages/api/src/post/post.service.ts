@@ -5,6 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LessThanOrEqual, Repository } from 'typeorm';
 import { PostEntity } from './entities/post.entity';
 
+const WORDS_PER_MINUTE = 200;
+
+function computeReadDuration(html: string): number {
+  const text = html.replace(/<[^>]+>/g, ' ');
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+}
+
 @Injectable()
 export class PostService {
   constructor(
@@ -13,7 +21,10 @@ export class PostService {
   ) {}
 
   create(input: CreatePostInput) {
-    const post = this.postRepository.create(input);
+    const post = this.postRepository.create({
+      ...input,
+      readDuration: computeReadDuration(input.content),
+    });
     return this.postRepository.save(post);
   }
 
@@ -39,7 +50,11 @@ export class PostService {
   }
 
   update(id: number, input: UpdatePostInput) {
-    return this.postRepository.update(id, input);
+    const extra: Partial<PostEntity> = {};
+    if (input.content) {
+      extra.readDuration = computeReadDuration(input.content);
+    }
+    return this.postRepository.update(id, { ...input, ...extra });
   }
 
   remove(id: number) {
