@@ -1,6 +1,8 @@
 import { findOneBlogPost } from "@/api/post";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -16,20 +18,28 @@ export default async function BlogPostDetail({
   if (!post) {
     return (
       <div className="container max-w-4xl py-16 text-center">
-        <h1 className="text-2xl font-semibold">Post not found</h1>
+        <h1 className="text-2xl font-semibold">Article introuvable</h1>
       </div>
     );
   }
 
   return (
     <article className="container max-w-4xl py-8 lg:py-12">
+      {/* Back Link */}
+      <Link href="/home/blog" className="inline-block mb-8">
+        <Button variant="ghost" size="sm" className="gap-2">
+          <ArrowLeft className="h-4 w-4" />
+          Retour au blog
+        </Button>
+      </Link>
+
       {/* Header Section */}
       <header className="space-y-4 mb-8">
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Calendar className="h-4 w-4" />
             <time dateTime={post.createdAt}>
-              {new Date(+post.createdAt).toLocaleDateString("en-US", {
+              {new Date(+post.createdAt).toLocaleDateString("fr-FR", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -39,7 +49,7 @@ export default async function BlogPostDetail({
           <span className="h-1 w-1 rounded-full bg-muted-foreground" />
           <div className="flex items-center gap-1.5">
             <Clock className="h-4 w-4" />
-            <span>5 min read</span>
+            <span>5 min de lecture</span>
           </div>
         </div>
 
@@ -78,9 +88,9 @@ export default async function BlogPostDetail({
       {/* Footer Section */}
       <footer className="flex items-center justify-between text-sm text-muted-foreground">
         <div>
-          Last updated:{" "}
+          Dernière mise à jour :{" "}
           <time dateTime={post.updatedAt}>
-            {new Date(+post.updatedAt).toLocaleDateString("en-US", {
+            {new Date(+post.updatedAt).toLocaleDateString("fr-FR", {
               year: "numeric",
               month: "long",
               day: "numeric",

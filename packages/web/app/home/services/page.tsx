@@ -1,0 +1,167 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Code2, Server, Cloud, GitBranch, FileCode2, Smartphone } from "lucide-react";
+import Link from "next/link";
+
+const services = [
+  {
+    icon: Code2,
+    title: "Développement d'Applications Full-Stack",
+    description: "Développement de bout en bout d'applications web modernes.",
+    includes: [
+      "Architecture frontend",
+      "Services backend",
+      "Développement d'APIs",
+      "Intégration de bases de données",
+      "Déploiement en production",
+    ],
+    tags: ["React", "Next.js", "NestJS"],
+  },
+  {
+    icon: Server,
+    title: "Systèmes Backend & APIs",
+    description:
+      "Conception et mise en œuvre de services backend robustes.",
+    includes: [
+      "APIs REST et GraphQL",
+      "Systèmes d'authentification",
+      "Architecture microservices",
+      "Intégrations de services externes",
+    ],
+    tags: ["NestJS"],
+  },
+  {
+    icon: Cloud,
+    title: "Infrastructure Cloud",
+    description: "Conception et déploiement d'environnements cloud scalables.",
+    includes: [
+      "Architecture d'infrastructure",
+      "Applications conteneurisées",
+      "Stratégies de déploiement scalables",
+      "Sécurité et réseau cloud",
+    ],
+    tags: ["Amazon Web Services", "Docker", "Kubernetes"],
+  },
+  {
+    icon: GitBranch,
+    title: "Automatisation DevOps & CI/CD",
+    description: "Automatisation des workflows de développement et de déploiement.",
+    includes: [
+      "Pipelines de build",
+      "Tests automatisés",
+      "Déploiement continu",
+      "Gestion des environnements",
+    ],
+    tags: ["GitHub Actions", "GitLab CI/CD"],
+  },
+  {
+    icon: FileCode2,
+    title: "Infrastructure as Code",
+    description:
+      "Provisionnement d'infrastructure via des configurations en code.",
+    includes: [
+      "Infrastructure reproductible",
+      "Provisionnement des environnements",
+      "Déploiement d'infrastructure automatisé",
+    ],
+    tags: ["Terraform"],
+  },
+  {
+    icon: Smartphone,
+    title: "Applications Mobiles Cross-Platform",
+    description: "Applications mobiles construites à partir d'une base de code unique.",
+    includes: [
+      "Applications iOS et Android",
+      "Intégration d'APIs",
+      "Optimisation des performances",
+    ],
+    tags: ["React Native", "Expo"],
+  },
+];
+
+export default function Services() {
+  return (
+    <div className="w-full">
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <h1 className="text-4xl md:text-5xl tracking-tight font-semibold">
+            Mes Services
+          </h1>
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            Des solutions complètes pour construire, déployer et faire évoluer
+            vos produits numériques — du développement à l&apos;infrastructure
+            cloud.
+          </p>
+        </div>
+      </section>
+
+      {/* Services Grid */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {services.map((service) => (
+            <Card
+              key={service.title}
+              className="border-border/50 hover:shadow-lg transition-shadow flex flex-col"
+            >
+              <CardHeader>
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                  <service.icon className="w-5 h-5 text-primary" />
+                </div>
+                <CardTitle>{service.title}</CardTitle>
+                <CardDescription className="leading-relaxed">
+                  {service.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col justify-between">
+                <ul className="space-y-2 mb-6 flex-1">
+                  {service.includes.map((item) => (
+                    <li
+                      key={item}
+                      className="text-sm text-muted-foreground flex items-start"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 mt-1.5 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-border">
+                  {service.tags.map((tag) => (
+                    <Badge key={tag} variant="secondary">{tag}</Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-muted/30 py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <h2 className="text-3xl md:text-4xl font-semibold">
+              Intéressé par mes services ?
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Discutons de votre projet et voyons comment je peux vous aider à
+              le concrétiser.
+            </p>
+            <Link href="/home/contact">
+              <Button size="lg" className="mt-4">
+                Demander un devis
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

@@ -1,7 +1,11 @@
 {
   "navigation": [
     {
-      "name": "About",
+      "name": "Accueil",
+      "href": "/home"
+    },
+    {
+      "name": "À propos",
       "href": "/home/about"
     },
     {
