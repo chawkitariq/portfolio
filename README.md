@@ -30,8 +30,7 @@ cp packages/web/.env.example packages/web/.env
 ```
 
 ```bash
-pnpm start:api   # API  → http://localhost:3000
-pnpm start:web   # Web  → http://localhost:3001
+pnpm start   # API  → http://localhost:3000 | Web  → http://localhost:3001
 ```
 
 > **MinIO:** [http://localhost:9001](http://localhost:9001) — `minio` / `minio123` — create a bucket named `portfolio`.
