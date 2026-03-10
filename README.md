@@ -1,63 +1,93 @@
 # Portfolio
 
-Fullstack monorepo used as a personal portfolio, including a blog with backoffice. The backend (NestJS) and frontend (Next.js) work together to provide complete management of content and projects.
-
-DevOps: All infrastructure is managed as code with Terraform (AWS ECS, RDS, S3, ALB, IAM, etc). CI/CD is automated with GitHub Actions (OIDC), enabling zero-downtime deployments, automatic migrations, and secure, keyless delivery to AWS.
-
-| | |
-|---|---|
-| Frontend | Next.js 16, Tailwind CSS, Shadcn/ui, Zustand, Tanstack Query/Table |
-| Backend | NestJS 11, GraphQL, REST, TypeORM |
-| Database | PostgreSQL 17 |
-| Storage | MinIO (local) / AWS S3 (prod) |
-| Infra | AWS ECS Fargate, RDS, ALB — Terraform |
-| CI/CD | GitHub Actions (OIDC) |
-| Package manager | pnpm 10 workspaces |
+A fullstack monorepo for a personal portfolio and blog with a backoffice.  
+Built with NestJS and Next.js, deployed on AWS with zero-downtime CI/CD.
 
 ---
 
-## Run locally
+## Stack
+
+| Layer          | Tech                                                          |
+| -------------- | ------------------------------------------------------------- |
+| Frontend       | Next.js 16, Tailwind CSS, Shadcn/ui, Zustand, Tanstack Query/Table |
+| Backend        | NestJS 11, GraphQL, REST, TypeORM                             |
+| Database       | PostgreSQL 17                                                 |
+| Storage        | MinIO (local) / AWS S3 (prod)                                 |
+| Infra          | AWS ECS Fargate, RDS, ALB — Terraform                        |
+| CI/CD          | GitHub Actions (OIDC)                                         |
+| Package manager | pnpm 10 workspaces                                           |
+
+---
+
+## Getting Started
 
 **Requirements:** Node.js ≥ 20, pnpm ≥ 10, Docker
+
+**1. Clone and install dependencies**
 
 ```bash
 git clone https://github.com/chawkitariq/portfolio.git
 cd portfolio
 pnpm install
-docker compose up -d
+```
+
+**2. Copy environment files**
+
+```bash
 cp packages/api/.env.example packages/api/.env
 cp packages/web/.env.example packages/web/.env
 ```
-    
+
+**3. Start infrastructure**
+
 ```bash
-pnpm start   # API  → http://localhost:3000 | Web  → http://localhost:3001
+docker compose up -d
 ```
 
-**MinIO:** [http://localhost:9001](http://localhost:9001)
+MinIO Console: <http://localhost:9001>
 - username: `minio`
 - password: `minio123`
 
+**4. Start the apps**
+
+```bash
+pnpm start
+```
+
+| Service | URL                   |
+| ------- | --------------------- |
+| API     | http://localhost:3000 |
+| Web     | http://localhost:3001 |
+
 ---
 
-## Admin backoffice
+## Admin Backoffice
 
-Access via `/admin` → redirects to `/sign-in` if not authenticated.  
-JWT stored in `localStorage`, automatically attached to every request.  
-Features: CRUD posts, Tiptap rich editor, S3 thumbnail upload.
+Navigate to `/admin` — unauthenticated users are redirected to `/sign-in`.
+
+- JWT is stored in `localStorage` and automatically attached to every request
+- CRUD posts with a Tiptap rich-text editor
+- S3 image upload
 
 ---
 
-## Infrastructure (Terraform)
+## Infrastructure
+
+All resources are managed with Terraform:  
+ECR, ECS Fargate, RDS, ALB, ACM, Route 53, S3, CloudWatch, IAM OIDC.
 
 ```bash
 cd terraform
-terraform init && terraform apply -var-file=terraform.tfvars
+terraform init
+terraform apply -var-file=terraform.tfvars
 ```
-
-Resources: ECR, ECS Fargate, RDS, ALB, ACM, Route 53, S3, CloudWatch, IAM OIDC.
 
 ---
 
-## CI/CD (GitHub Actions)
+## CI/CD
 
-Push to `main` touching `packages/api/**` → build image → push to ECR → redeploy ECS.
+Pushing to `main` with changes under `packages/api/**` or `packages/web/**` triggers a GitHub Actions workflow that:
+
+1. Builds the Docker image
+2. Pushes it to ECR
+3. Redeploys the ECS service with zero downtime
