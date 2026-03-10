@@ -29,7 +29,7 @@ export default function EditPostPage() {
   useEffect(() => {
     setBreadcrumbs([
       { label: "Home", href: "/admin" },
-      { label: "Posts", href: "/admin/posts" },
+      { label: "Blog", href: "/admin/blog" },
       { label: "Edit Post" },
     ]);
   }, [setBreadcrumbs]);
@@ -53,7 +53,7 @@ export default function EditPostPage() {
     onSuccess: () => {
       toast.success("Post edited successfully!");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      router.push("/admin/posts");
+      router.push("/admin/blog");
     },
     onError: () => {
       toast.error("Failed to edit post. Please try again.");
@@ -148,7 +148,7 @@ export default function EditPostPage() {
               {formik.isSubmitting ? "Editing..." : "Edit Post"}
             </Button>
             <Button type="button" variant="outline" asChild>
-              <Link href="/admin/posts">Cancel</Link>
+              <Link href="/admin/blog">Cancel</Link>
             </Button>
           </div>
         </form>

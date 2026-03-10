@@ -28,7 +28,7 @@ export default function NewPostPage() {
   useEffect(() => {
     setBreadcrumbs([
       { label: "Home", href: "/admin" },
-      { label: "Posts", href: "/admin/posts" },
+      { label: "Blog", href: "/admin/blog" },
       { label: "New Post" },
     ]);
   }, [setBreadcrumbs]);
@@ -41,7 +41,7 @@ export default function NewPostPage() {
     onSuccess: () => {
       toast.success("Post created successfully!");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      router.push("/admin/posts");
+      router.push("/admin/blog");
     },
     onError: () => {
       toast.error("Failed to create post. Please try again.");
@@ -133,7 +133,7 @@ export default function NewPostPage() {
               {createPostMutation.isPending ? "Creating..." : "Create Post"}
             </Button>
             <Button type="button" variant="outline" asChild>
-              <Link href="/admin/posts">Cancel</Link>
+              <Link href="/admin/blog">Cancel</Link>
             </Button>
           </div>
         </form>

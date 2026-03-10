@@ -33,7 +33,7 @@ export default function DemoPage() {
   const setBreadcrumbs = useBreadcrumbStore((state) => state.setBreadcrumbs);
 
   useEffect(() => {
-    setBreadcrumbs([{ label: "Home", href: "/admin" }, { label: "Posts" }]);
+    setBreadcrumbs([{ label: "Home", href: "/admin" }, { label: "Blog" }]);
   }, [setBreadcrumbs]);
 
   const findAllPostQuery = useQuery({
@@ -119,12 +119,12 @@ export default function DemoPage() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem asChild>
-                <Link href={`/admin/posts/${row.getValue<string>("id")}`}>
+                <Link href={`/admin/blog/${row.getValue<string>("id")}`}>
                   View
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/admin/posts/${row.getValue<string>("id")}/edit`}>
+                <Link href={`/admin/blog/${row.getValue<string>("id")}/edit`}>
                   Edit
                 </Link>
               </DropdownMenuItem>
@@ -158,7 +158,7 @@ export default function DemoPage() {
   return (
     <div className="container mx-auto grid gap-4 p-4">
       <Button className="ml-auto" asChild>
-        <Link href="/admin/posts/new">New Post</Link>
+        <Link href="/admin/blog/new">New Post</Link>
       </Button>
       <DataTable table={table} />
       <div className="flex justify-between items-center">
