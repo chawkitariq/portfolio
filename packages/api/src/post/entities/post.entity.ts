@@ -31,6 +31,12 @@ export class PostEntity {
   @Column({ type: 'text' })
   content!: string;
 
+  @Column({ name: 'read_duration', type: 'integer', default: 1 })
+  readDuration!: number;
+
+  @Column({ name: 'published_at', type: 'timestamptz' })
+  publishedAt: Date;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;
 

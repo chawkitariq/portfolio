@@ -4,6 +4,8 @@ type Post {
   thumbnailUrl: String
   summary: String!
   content: String!
+  readDuration: Int!
+  publishedAt: String!
   createdAt: String!
   updatedAt: String!
 }
@@ -13,6 +15,7 @@ input CreatePostInput {
   thumbnailUrl: String
   summary: String!
   content: String!
+  publishedAt: String!
 }
 
 input UpdatePostInput {
@@ -21,6 +24,7 @@ input UpdatePostInput {
   thumbnailUrl: String
   summary: String
   content: String
+  publishedAt: String
 }
 
 type Query {

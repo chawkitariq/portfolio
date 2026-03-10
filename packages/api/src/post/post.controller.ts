@@ -62,13 +62,21 @@ export class PostController {
   @Get('posts')
   @Public()
   findAll() {
-    return this.postService.findAll();
+    return this.postService.findAllPublished();
   }
 
   @Get('posts/:id')
   @Public()
-  findOne(@Param('id', new ParseIntPipe({ optional: false })) id: number) {
-    return this.postService.findOne(id);
+  async findOne(
+    @Param('id', new ParseIntPipe({ optional: false })) id: number,
+  ) {
+    const post = await this.postService.findOnePublished(id);
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return post;
   }
 
   @Post('upload')
