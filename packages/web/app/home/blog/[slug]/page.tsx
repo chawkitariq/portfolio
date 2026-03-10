@@ -24,7 +24,7 @@ export default async function BlogPostDetail({
   }
 
   return (
-    <article className="container max-w-4xl py-8 lg:py-12">
+    <article className="container max-w-4xl py-8 lg:py-12 m-auto">
       {/* Back Link */}
       <Link href="/home/blog" className="inline-block mb-8">
         <Button variant="ghost" size="sm" className="gap-2">
@@ -39,7 +39,7 @@ export default async function BlogPostDetail({
           <div className="flex items-center gap-1.5">
             <Calendar className="h-4 w-4" />
             <time dateTime={post.createdAt}>
-              {new Date(+post.createdAt).toLocaleDateString("fr-FR", {
+              {new Date(post.createdAt).toLocaleDateString("fr-FR", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -90,7 +90,7 @@ export default async function BlogPostDetail({
         <div>
           Dernière mise à jour :{" "}
           <time dateTime={post.updatedAt}>
-            {new Date(+post.updatedAt).toLocaleDateString("fr-FR", {
+            {new Date(post.updatedAt).toLocaleDateString("fr-FR", {
               year: "numeric",
               month: "long",
               day: "numeric",

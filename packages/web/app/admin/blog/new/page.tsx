@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { CreatePostInput } from "@portfolio/api";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +15,13 @@ import { toast } from "sonner";
 import { useBreadcrumbStore } from "@/stores/breadcrumb";
 import { useCallback, useEffect } from "react";
 import { uploadFile } from "@/api/upload";
+import { object, string } from "yup";
+
+const validationSchema = object({
+  title: string().required("Title is required"),
+  summary: string().required("Summary is required"),
+  content: string().required("Content is required"),
+});
 
 type NewPostFormValues = Omit<CreatePostInput, "thumbnailUrl"> & {
   thumbnailUrl?: string | File;
@@ -60,6 +67,7 @@ export default function NewPostPage() {
       content: "",
       thumbnailUrl: undefined,
     },
+    validationSchema,
     onSubmit: async (values) => {
       let thumbnailUrl = values.thumbnailUrl;
       if (thumbnailUrl instanceof File) {
@@ -69,8 +77,6 @@ export default function NewPostPage() {
       createPostMutation.mutate({ ...values, thumbnailUrl } as CreatePostInput);
     },
   });
-
-  console.log(formik.values);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -83,42 +89,62 @@ export default function NewPostPage() {
         </div>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
+          <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="title">Title</FieldLabel>
             <Input
               {...formik.getFieldProps("title")}
               id="title"
               type="text"
               placeholder="Enter post title"
-              required
+              aria-invalid={formik.touched.title && !!formik.errors.title}
             />
-          </div>
+            {formik.touched.title && formik.errors.title && (
+              <FieldDescription className="text-destructive">
+                {formik.errors.title}
+              </FieldDescription>
+            )}
+          </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="summary">Summary</Label>
+          <Field>
+            <FieldLabel htmlFor="summary">Summary</FieldLabel>
             <Textarea
               {...formik.getFieldProps("summary")}
               id="summary"
               placeholder="Brief summary of the post"
               rows={3}
-              required
+              aria-invalid={formik.touched.summary && !!formik.errors.summary}
             />
-          </div>
+            {formik.touched.summary && formik.errors.summary && (
+              <FieldDescription className="text-destructive">
+                {formik.errors.summary}
+              </FieldDescription>
+            )}
+          </Field>
+          </FieldGroup>
 
-          <MinimalTiptapEditor
-            value={formik.values.content}
-            onChange={(value) => formik.setFieldValue("content", value)}
-            className="w-full"
-            editorContentClassName="p-5 h-[800px] overflow-y-scroll"
-            output="html"
-            placeholder="Post content"
-            editable={true}
-            editorClassName="focus:outline-hidden"
-            uploader={handleUploader}
-          />
+          <Field>
+            <FieldLabel>Content</FieldLabel>
+            <MinimalTiptapEditor
+              value={formik.values.content}
+              onChange={(value) => formik.setFieldValue("content", value)}
+              className="w-full"
+              editorContentClassName="p-5 h-[800px] overflow-y-scroll"
+              output="html"
+              placeholder="Post content"
+              editable={true}
+              editorClassName="focus:outline-hidden"
+              uploader={handleUploader}
+            />
+            {formik.touched.content && formik.errors.content && (
+              <FieldDescription className="text-destructive">
+                {formik.errors.content}
+              </FieldDescription>
+            )}
+          </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="thumbnailUrl">Thumbnail</Label>
+          <Field>
+            <FieldLabel htmlFor="thumbnailUrl">Thumbnail</FieldLabel>
             <Input
               onChange={(e) =>
                 formik.setFieldValue("thumbnailUrl", e.target.files?.[0])
@@ -126,7 +152,7 @@ export default function NewPostPage() {
               id="thumbnailUrl"
               type="file"
             />
-          </div>
+          </Field>
 
           <div className="flex gap-4">
             <Button type="submit" disabled={createPostMutation.isPending}>

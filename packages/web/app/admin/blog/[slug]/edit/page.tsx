@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { UpdatePostInput } from "@portfolio/api";
 import { useFormik } from "formik";
 import { useParams, useRouter } from "next/navigation";
@@ -15,6 +15,13 @@ import { toast } from "sonner";
 import { useCallback, useEffect, useMemo } from "react";
 import { useBreadcrumbStore } from "@/stores/breadcrumb";
 import { uploadFile } from "@/api/upload";
+import { object, string } from "yup";
+
+const validationSchema = object({
+  title: string().required("Title is required"),
+  summary: string().required("Summary is required"),
+  content: string().required("Content is required"),
+});
 
 type EditPostFormValues = Omit<UpdatePostInput, "thumbnailUrl"> & {
   thumbnailUrl?: string | File | null;
@@ -74,6 +81,7 @@ export default function EditPostPage() {
       thumbnailUrl: post?.thumbnailUrl || "",
     },
     enableReinitialize: true,
+    validationSchema,
     onSubmit: async (values) => {
       let thumbnailUrl = values.thumbnailUrl;
       if (thumbnailUrl instanceof File) {
@@ -95,30 +103,42 @@ export default function EditPostPage() {
         </div>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
+          <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="title">Title</FieldLabel>
             <Input
               {...formik.getFieldProps("title")}
               id="title"
               type="text"
               placeholder="Enter post title"
-              required
+              aria-invalid={formik.touched.title && !!formik.errors.title}
             />
-          </div>
+            {formik.touched.title && formik.errors.title && (
+              <FieldDescription className="text-destructive">
+                {formik.errors.title}
+              </FieldDescription>
+            )}
+          </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="summary">Summary</Label>
+          <Field>
+            <FieldLabel htmlFor="summary">Summary</FieldLabel>
             <Textarea
               {...formik.getFieldProps("summary")}
               id="summary"
               placeholder="Brief summary of the post"
               rows={3}
-              required
+              aria-invalid={formik.touched.summary && !!formik.errors.summary}
             />
-          </div>
+            {formik.touched.summary && formik.errors.summary && (
+              <FieldDescription className="text-destructive">
+                {formik.errors.summary}
+              </FieldDescription>
+            )}
+          </Field>
+          </FieldGroup>
 
-          <div className="space-y-2">
-            <Label>Content</Label>
+          <Field>
+            <FieldLabel>Content</FieldLabel>
             <MinimalTiptapEditor
               uploader={handleUploader}
               value={formik.values.content}
@@ -130,10 +150,15 @@ export default function EditPostPage() {
               editable={true}
               editorClassName="focus:outline-hidden"
             />
-          </div>
+            {formik.touched.content && formik.errors.content && (
+              <FieldDescription className="text-destructive">
+                {formik.errors.content}
+              </FieldDescription>
+            )}
+          </Field>
 
-          <div className="space-y-2">
-            <Label htmlFor="thumbnailUrl">Thumbnail</Label>
+          <Field>
+            <FieldLabel htmlFor="thumbnailUrl">Thumbnail</FieldLabel>
             <Input
               id="thumbnailUrl"
               type="file"
@@ -141,7 +166,7 @@ export default function EditPostPage() {
                 formik.setFieldValue("thumbnailUrl", e.currentTarget.files?.[0])
               }
             />
-          </div>
+          </Field>
 
           <div className="flex gap-4">
             <Button type="submit" disabled={formik.isSubmitting}>
