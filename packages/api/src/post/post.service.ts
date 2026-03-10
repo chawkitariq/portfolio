@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, Repository } from 'typeorm';
 import { PostEntity } from './entities/post.entity';
 
 @Injectable()
@@ -17,8 +17,21 @@ export class PostService {
     return this.postRepository.save(post);
   }
 
+  findAllPublished() {
+    return this.postRepository.findBy({
+      publishedAt: LessThanOrEqual(new Date()),
+    });
+  }
+
   findAll() {
     return this.postRepository.find();
+  }
+
+  findOnePublished(id: number) {
+    return this.postRepository.findOneBy({
+      id,
+      publishedAt: LessThanOrEqual(new Date()),
+    });
   }
 
   findOne(id: number) {

@@ -1,4 +1,10 @@
-import { IsDefined, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsDefined,
+  IsISO8601,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreatePostInput {
   @IsDefined()
@@ -19,4 +25,8 @@ export class CreatePostInput {
   @IsNotEmpty()
   @IsString()
   content!: string;
+
+  @IsDefined()
+  @IsISO8601()
+  publishedAt: Date;
 }

@@ -21,6 +21,7 @@ export interface UpdatePostInput {
     thumbnailUrl?: Nullable<string>;
     summary?: Nullable<string>;
     content?: Nullable<string>;
+    publishedAt: string;
 }
 
 export interface Post {
@@ -29,6 +30,7 @@ export interface Post {
     thumbnailUrl?: Nullable<string>;
     summary: string;
     content: string;
+    publishedAt: string;
     createdAt: string;
     updatedAt: string;
 }
