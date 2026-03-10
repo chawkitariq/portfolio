@@ -6,10 +6,15 @@
   "scripts": {
     "start:api": "pnpm --filter @portfolio/api start:dev",
     "start:web": "pnpm --filter @portfolio/web dev",
+    "start": "concurrently --kill-others-on-fail \"pnpm start:api\" \"wait-on tcp:3000 && pnpm start:web\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.22.0"
+  "packageManager": "pnpm@10.22.0",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "wait-on": "^9.0.4"
+  }
 }
