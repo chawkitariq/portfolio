@@ -28,12 +28,14 @@ docker compose up -d
 cp packages/api/.env.example packages/api/.env
 cp packages/web/.env.example packages/web/.env
 ```
-
+    
 ```bash
 pnpm start   # API  → http://localhost:3000 | Web  → http://localhost:3001
 ```
 
-> **MinIO:** [http://localhost:9001](http://localhost:9001) — `minio` / `minio123` — create a bucket named `portfolio`.
+**MinIO:** [http://localhost:9001](http://localhost:9001)
+- username: `minio`
+- password: `minio123`
 
 ---
 
