@@ -109,6 +109,32 @@ export default function DemoPage() {
         ),
       },
       {
+        accessorKey: "publishedAt",
+        header: "Published At",
+        cell: ({ getValue }) => {
+          const val = getValue<string | null>();
+          return (
+            <div className="font-mono text-sm text-muted-foreground">
+              {val
+                ? Intl.DateTimeFormat("fr-FR", {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  }).format(new Date(+val))
+                : "—"}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "readDuration",
+        header: "Read",
+        cell: ({ getValue }) => (
+          <div className="text-sm text-muted-foreground">
+            {getValue<number>()} min
+          </div>
+        ),
+      },
+      {
         header: "actions",
         cell: ({ row }) => (
           <DropdownMenu>

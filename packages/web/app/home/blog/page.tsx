@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -62,16 +62,27 @@ export default async function Blog() {
                 </CardHeader>
                 <CardContent className="flex-1" />
                 <CardFooter className="flex flex-col gap-4">
-                  {post.createdAt && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground w-full">
-                      <Calendar className="w-4 h-4" />
-                      <time dateTime={post.createdAt}>
-                        {new Date(+post.createdAt).toLocaleDateString("fr-FR", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </time>
+                  {post.publishedAt && (
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground w-full">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="w-4 h-4" />
+                        <time dateTime={post.publishedAt}>
+                          {new Date(post.publishedAt).toLocaleDateString("fr-FR", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </time>
+                      </div>
+                      {post.readDuration && (
+                        <>
+                          <span className="h-1 w-1 rounded-full bg-muted-foreground" />
+                          <div className="flex items-center gap-1.5">
+                            <Clock className="w-4 h-4" />
+                            <span>{post.readDuration} min de lecture</span>
+                          </div>
+                        </>
+                      )}
                     </div>
                   )}
                   <Link href={`/home/blog/${post.id}`} className="w-full">

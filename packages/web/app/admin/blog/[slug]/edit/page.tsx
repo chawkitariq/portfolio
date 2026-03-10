@@ -60,6 +60,7 @@ export default function EditPostPage() {
       summary: post?.summary || "",
       content: post?.content || "",
       thumbnailUrl: post?.thumbnailUrl || "",
+      publishedAt: post?.publishedAt,
     },
     enableReinitialize: true,
     validationSchema: validationSchema,

@@ -23,6 +23,8 @@ export function createPost(
         thumbnailUrl
         summary
         content
+        readDuration
+        publishedAt
         createdAt
         updatedAt
         }
@@ -48,6 +50,8 @@ export function findAllPost(): Promise<
           thumbnailUrl
           summary
           content
+          readDuration
+          publishedAt
           createdAt
           updatedAt
         }
@@ -70,6 +74,8 @@ export function findOnePost(
           thumbnailUrl
           summary
           content
+          readDuration
+          publishedAt
           createdAt
           updatedAt
         }
@@ -94,6 +100,8 @@ export function updatePost(
           thumbnailUrl
           summary
           content
+          readDuration
+          publishedAt
           createdAt
           updatedAt
         }

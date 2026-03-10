@@ -106,6 +106,21 @@ export default function Form<T extends PostInput = PostInput>({
         />
       </Field>
 
+      <Field>
+        <FieldLabel htmlFor="publishedAt">Publish Date</FieldLabel>
+        <Input
+          {...form.getFieldProps("publishedAt")}
+          id="publishedAt"
+          type="datetime-local"
+          aria-invalid={form.touched.publishedAt && !!form.errors.publishedAt}
+        />
+        {form.touched.publishedAt && form.errors.publishedAt && (
+          <FieldDescription className="text-destructive">
+            {String(form.errors.publishedAt)}
+          </FieldDescription>
+        )}
+      </Field>
+
       <div className="flex gap-4">
         {submitButtonRender()}
         <Button type="button" variant="outline" asChild>

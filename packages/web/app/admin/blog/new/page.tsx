@@ -47,6 +47,7 @@ export default function NewPostPage() {
       summary: "",
       content: "",
       thumbnailUrl: undefined,
+      publishedAt: new Date().toString(),
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
