@@ -60,7 +60,7 @@ export default function EditPostPage() {
       summary: post?.summary || "",
       content: post?.content || "",
       thumbnailUrl: post?.thumbnailUrl || "",
-      publishedAt: post?.publishedAt,
+      publishedAt: post?.publishedAt && new Date(+post?.publishedAt).toISOString(),
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -75,7 +75,7 @@ export default function EditPostPage() {
   });
 
   return (
-    <div className="px-4 py-8">
+    <div className="container m-auto px-4 py-8">
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Edit Post</h1>

@@ -131,8 +131,8 @@ export default function Form<T extends PostInput = PostInput>({
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <CalendarWithPresets
-              value={new Date(form.values.publishedAt!)}
-              onChange={(date) => form.setFieldValue("publishedAt", date)}
+              value={form.values.publishedAt as Date | undefined}
+              onChange={(date) => form.setFieldValue("publishedAt", date.toISOString())}
             />
           </PopoverContent>
         </Popover>
