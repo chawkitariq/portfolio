@@ -1,5 +1,6 @@
 "use client";
 
+import emailjs from "@emailjs/browser";
 import { useFormik } from "formik";
 import { object, string } from "yup";
 import {
@@ -67,11 +68,28 @@ export default function Contact() {
       message: "",
     },
     validationSchema,
-    onSubmit: (_values, { resetForm }) => {
-      toast.success(
-        "Merci pour votre message ! Je vous répondrai dans les plus brefs délais.",
-      );
-      resetForm();
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      try {
+        await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+          {
+            name: values.name,
+            email: values.email,
+            subject: values.subject,
+            message: values.message,
+          },
+          { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY! },
+        );
+        toast.success(
+          "Merci pour votre message ! Je vous répondrai dans les plus brefs délais.",
+        );
+        resetForm();
+      } catch {
+        toast.error("Une erreur est survenue. Veuillez réessayer.");
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
