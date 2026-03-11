@@ -1,9 +1,16 @@
 import Link from "next/link";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Politique de confidentialité",
   description:
-    "Politique de confidentialité relative au formulaire de contact.",
+    "Politique de confidentialité relative au formulaire de contact — informations sur la collecte, l’utilisation et la conservation de vos données personnelles (RGPD).",
+  robots: { index: false, follow: false },
+  openGraph: {
+    title: "Politique de confidentialité | Chawki Tariq",
+    url: "/home/politique-de-confidentialite",
+  },
 };
 
 export default function PolitiqueDeConfidentialite() {

@@ -1,7 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Cloud, Code, Layers } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Chawki Tariq — Full-Stack Cloud Engineer",
+  },
+  description:
+    "Je conçois, développe et déploie des applications web scalables et des infrastructures cloud modernes — de l’interface utilisateur à la production. React, Next.js, NestJS, AWS.",
+  openGraph: {
+    title: "Chawki Tariq — Full-Stack Cloud Engineer",
+    description:
+      "Je conçois, développe et déploie des applications web scalables et des infrastructures cloud modernes.",
+    url: "/home",
+  },
+};
 
 const features = [
   {

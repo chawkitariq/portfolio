@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+
+export const metadata: Metadata = {
+  title: "À propos",
+  description:
+    "Découvrez mon parcours, mes compétences et mon expérience en tant que Full-Stack Cloud Engineer freelance — React, NestJS, AWS, Terraform, Docker, Kubernetes.",
+  openGraph: {
+    title: "À propos | Chawki Tariq",
+    description:
+      "Parcours, compétences et expérience d’un Full-Stack Cloud Engineer freelance.",
+    url: "/home/about",
+  },
+};
 
 const skills = [
   "React",

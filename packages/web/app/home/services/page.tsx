@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   Card,
   CardContent,
@@ -9,6 +10,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Code2, Server, Cloud, GitBranch, FileCode2, Smartphone } from "lucide-react";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description:
+    "Développement full-stack, infrastructure cloud AWS, DevOps CI/CD, APIs REST & GraphQL, applications mobiles cross-platform — des services complets pour vos projets digitaux.",
+  openGraph: {
+    title: "Services | Chawki Tariq",
+    description:
+      "Développement full-stack, cloud AWS, DevOps, APIs, applications mobiles — des solutions complètes pour vos projets.",
+    url: "/home/services",
+  },
+};
 
 const services = [
   {
