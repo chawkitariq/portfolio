@@ -2,7 +2,7 @@
 
 import emailjs from "@emailjs/browser";
 import { useFormik } from "formik";
-import { object, string } from "yup";
+import { boolean, object, string } from "yup";
 import {
   Card,
   CardContent,
@@ -19,7 +19,9 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Github, Linkedin } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { MaltIcon } from "@/components/malt-icon";
 
@@ -57,6 +59,9 @@ const validationSchema = object({
   message: string()
     .min(10, "Le message doit contenir au moins 10 caractères")
     .required("Le message est requis"),
+  consent: boolean()
+    .oneOf([true], "Vous devez accepter la politique de confidentialité")
+    .required("Vous devez accepter la politique de confidentialité"),
 });
 
 export default function Contact() {
@@ -66,6 +71,7 @@ export default function Contact() {
       email: "",
       subject: "",
       message: "",
+      consent: false,
     },
     validationSchema,
     onSubmit: async (values, { resetForm, setSubmitting }) => {
@@ -224,6 +230,42 @@ export default function Contact() {
                       {formik.touched.message && formik.errors.message && (
                         <FieldDescription className="text-destructive">
                           {formik.errors.message}
+                        </FieldDescription>
+                      )}
+                    </Field>
+                    <Field>
+                      <div className="flex items-start gap-3">
+                        <Checkbox
+                          id="consent"
+                          checked={formik.values.consent}
+                          onCheckedChange={(checked) =>
+                            formik.setFieldValue("consent", checked === true)
+                          }
+                          onBlur={() => formik.setFieldTouched("consent", true)}
+                          aria-invalid={
+                            formik.touched.consent && !!formik.errors.consent
+                          }
+                        />
+                        <label
+                          htmlFor="consent"
+                          className="text-sm leading-relaxed cursor-pointer"
+                        >
+                          J&apos;accepte que mes données (nom, adresse email)
+                          soient utilisées uniquement pour traiter ma demande,
+                          conformément à la{" "}
+                          <Link
+                            href="/home/politique-de-confidentialite"
+                            className="underline hover:text-primary transition-colors"
+                            target="_blank"
+                          >
+                            politique de confidentialité
+                          </Link>
+                          .
+                        </label>
+                      </div>
+                      {formik.touched.consent && formik.errors.consent && (
+                        <FieldDescription className="text-destructive">
+                          {formik.errors.consent}
                         </FieldDescription>
                       )}
                     </Field>
