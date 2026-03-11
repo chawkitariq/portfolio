@@ -3,7 +3,7 @@ name: Deploy Web to ECS
 on:
   push:
     branches:
-      - main
+      - never
     paths:
       - "packages/web/**"
       - "package.json"

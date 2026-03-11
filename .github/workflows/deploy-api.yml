@@ -3,7 +3,7 @@ name: Deploy API to ECS
 on:
   push:
     branches:
-      - main
+      - never
     paths:
       - "packages/api/**"
       - "package.json"
