@@ -75,23 +75,39 @@ export default function Contact() {
     },
     validationSchema,
     onSubmit: async (values, { resetForm, setSubmitting }) => {
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        console.error("[EmailJS] Missing environment variables:", {
+          serviceId: !!serviceId,
+          templateId: !!templateId,
+          publicKey: !!publicKey,
+        });
+        toast.error("Configuration du service d'email manquante.");
+        setSubmitting(false);
+        return;
+      }
+
       try {
         await emailjs.send(
-          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+          serviceId,
+          templateId,
           {
-            name: values.name,
-            email: values.email,
+            from_name: values.name,
+            reply_to: values.email,
             subject: values.subject,
             message: values.message,
           },
-          { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY! },
+          { publicKey },
         );
         toast.success(
           "Merci pour votre message ! Je vous répondrai dans les plus brefs délais.",
         );
         resetForm();
-      } catch {
+      } catch (error) {
+        console.error("[EmailJS] Send failed:", error);
         toast.error("Une erreur est survenue. Veuillez réessayer.");
       } finally {
         setSubmitting(false);
