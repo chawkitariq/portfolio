@@ -10,6 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -43,6 +49,27 @@ const contactInfo = [
     title: "Malt",
     value: "malt.fr/profile/tariqchawki",
     link: "https://www.malt.fr/profile/tariqchawki",
+  },
+];
+
+const faqItems = [
+  {
+    question: "Quels sont vos disponibilités ?",
+    answer: "Je ne suis actuellement disponible que les week-ends et soir",
+  },
+  {
+    question: "Quels sont vos tarifs ?",
+    answer:
+      "La tarification dépend du projet et surtout du temps qui sera nécessaire pour le mener à bien. À titre indicatif mon tarif journalier moyen se situe aux alentour de 250€/jour.",
+  },
+  {
+    question: "Effectuez-vous des missions en Agence ?",
+    answer: "J'effectue l'ensemble de mes missions à distance.",
+  },
+  {
+    question: "Faites-vous la partie design des projets ?",
+    answer:
+      "Je ne suis malheureusement pas en capacité d'effectuer le design d'une application aussi il sera nécessaire de fournir le design si la mission le nécessite.",
   },
 ];
 
@@ -297,6 +324,27 @@ export default function Contact() {
                 </form>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <h2 className="text-2xl font-semibold">FAQ</h2>
+          <div className="rounded-lg border border-border/50 px-6">
+            <Accordion type="single" collapsible defaultValue="faq-0">
+              {faqItems.map((item, index) => (
+                <AccordionItem key={item.question} value={`faq-${index}`}>
+                  <AccordionTrigger className="text-base">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </div>
       </section>
