@@ -17,7 +17,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
   }
 
   if (!isAuthenticated) {
-    return redirect("/sign-in");
+    return redirect("/admin/sign-in");
   }
 
   return children;
